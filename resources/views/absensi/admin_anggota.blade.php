@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Anggota — Admin Perpustakaan STIKes Panti Waluya</title>
+    <meta name="description" content="Dashboard admin untuk mengelola data anggota perpustakaan STIKes Panti Waluya Malang.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --primary: #4f46e5;
+            --secondary: #7c3aed;
+            --success: #10b981;
+            --dark-bg: #0f172a;
+            --dark-card: #1e293b;
+            --dark-border: rgba(255,255,255,0.07);
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .layout { display: flex; min-height: 100vh; }
+
+        /* Sidebar — identical to admin.blade.php */
+        .sidebar {
+            width: 240px;
+            background: #090e1a;
+            border-right: 1px solid var(--dark-border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+            z-index: 50;
+        }
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-area { margin-left: 0 !important; }
+        }
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1.4rem 1.3rem;
+            border-bottom: 1px solid var(--dark-border);
+        }
+        .sidebar-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: #fff; flex-shrink: 0;
+        }
+        .sidebar-logo-text { font-family:'Poppins',sans-serif; font-size:0.82rem; font-weight:700; color:var(--text-primary); line-height:1.2; }
+        .sidebar-logo-sub { font-size:0.65rem; font-weight:400; color:var(--text-muted); display:block; }
+        .sidebar-nav { flex:1; padding:1.2rem 0.8rem; display:flex; flex-direction:column; gap:0.25rem; }
+        .sidebar-label { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); padding:0.5rem 0.7rem 0.3rem; margin-top:0.5rem; }
+        .nav-link { display:flex; align-items:center; gap:0.65rem; padding:0.65rem 0.9rem; border-radius:10px; font-size:0.84rem; font-weight:500; color:var(--text-secondary); text-decoration:none; transition:all 0.2s ease; }
+        .nav-link:hover { background:rgba(255,255,255,0.05); color:var(--text-primary); }
+        .nav-link.active { background:linear-gradient(90deg,rgba(79,70,229,0.2),rgba(124,58,237,0.1)); color:#a5b4fc; border:1px solid rgba(79,70,229,0.2); font-weight:600; }
+        .nav-link .nav-icon { width:18px; text-align:center; font-size:0.88rem; }
+        .sidebar-footer { padding:1rem 0.8rem; border-top:1px solid var(--dark-border); display:flex; flex-direction:column; gap:0.4rem; }
+        .sidebar-footer-link { display:flex; align-items:center; gap:0.6rem; padding:0.6rem 0.9rem; border-radius:10px; font-size:0.82rem; font-weight:500; text-decoration:none; transition:all 0.2s; }
+        .sidebar-footer-back { color:var(--text-secondary); }
+        .sidebar-footer-back:hover { background:rgba(255,255,255,0.05); color:var(--text-primary); }
+        .sidebar-logout-form { width:100%; }
+        .sidebar-logout-btn { width:100%; display:flex; align-items:center; gap:0.6rem; padding:0.6rem 0.9rem; border-radius:10px; font-size:0.82rem; font-weight:600; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.15); color:#f87171; cursor:pointer; transition:all 0.2s; font-family:'Inter',sans-serif; }
+        .sidebar-logout-btn:hover { background:rgba(239,68,68,0.2); }
+
+        /* Main area */
+        .main-area { margin-left:240px; flex:1; display:flex; flex-direction:column; }
+
+        /* Topbar */
+        .topbar { display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; background:rgba(15,23,42,0.8); backdrop-filter:blur(12px); border-bottom:1px solid var(--dark-border); position:sticky; top:0; z-index:40; }
+        .topbar-left h1 { font-family:'Poppins',sans-serif; font-size:1.1rem; font-weight:700; color:var(--text-primary); }
+        .topbar-left p { font-size:0.78rem; color:var(--text-muted); }
+        .admin-badge { display:flex; align-items:center; gap:0.5rem; background:rgba(79,70,229,0.12); border:1px solid rgba(79,70,229,0.2); border-radius:50px; padding:0.4rem 0.9rem; font-size:0.78rem; font-weight:600; color:#a5b4fc; }
+        .admin-avatar { width:26px; height:26px; background:linear-gradient(135deg,#4f46e5,#7c3aed); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:#fff; }
+
+        /* Page content */
+        .page-content { padding: 2rem; }
+
+        /* Flash */
+        .flash-msg { display:flex; align-items:center; gap:0.65rem; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2); border-radius:12px; padding:0.85rem 1rem; color:#6ee7b7; font-size:0.84rem; font-weight:500; margin-bottom:1.5rem; animation:slideDown 0.3s ease; }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);} }
+
+        /* Stat grid */
+        .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-bottom:1.5rem; }
+        .stat-card { background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; padding:1.2rem 1.3rem; display:flex; align-items:center; gap:1rem; position:relative; overflow:hidden; transition:transform 0.25s,box-shadow 0.25s; }
+        .stat-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:var(--stat-accent,linear-gradient(90deg,#4f46e5,#7c3aed)); }
+        .stat-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.3); }
+        .stat-icon-wrap { width:44px;height:44px; border-radius:12px; display:flex;align-items:center;justify-content:center; font-size:1.1rem; flex-shrink:0; }
+        .stat-value { font-family:'Poppins',sans-serif; font-size:1.7rem; font-weight:800; color:var(--text-primary); line-height:1; margin-bottom:0.2rem; }
+        .stat-label { font-size:0.73rem; color:var(--text-muted); font-weight:500; }
+
+        /* Filter card */
+        .filter-card { background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; padding:1rem 1.2rem; margin-bottom:1.2rem; }
+        .filter-form { display:flex; gap:0.75rem; align-items:center; flex-wrap:wrap; }
+        .filter-input-wrap { position:relative; flex:1; min-width:200px; }
+        .filter-input-icon { position:absolute; left:0.9rem; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem; pointer-events:none; }
+        .filter-input { width:100%; padding:0.65rem 0.9rem 0.65rem 2.5rem; font-size:0.85rem; font-family:'Inter',sans-serif; color:var(--text-primary); background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.08); border-radius:10px; outline:none; transition:all 0.2s; }
+        .filter-input:focus { border-color:var(--primary); background:rgba(79,70,229,0.06); box-shadow:0 0 0 3px rgba(79,70,229,0.1); }
+        .filter-input::placeholder { color:var(--text-muted); }
+        .filter-select { padding:0.65rem 2.2rem 0.65rem 0.9rem; font-size:0.85rem; font-family:'Inter',sans-serif; color:var(--text-primary); background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.08); border-radius:10px; outline:none; transition:all 0.2s; color-scheme:dark; min-width:180px; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 0.7rem center; background-size:14px; }
+        .filter-select:focus { border-color:var(--primary); }
+        .filter-btn-group { display:flex; gap:0.5rem; }
+        .btn-filter { display:flex;align-items:center;gap:0.4rem; padding:0.65rem 1.1rem; font-size:0.83rem; font-weight:600; font-family:'Inter',sans-serif; border:none; border-radius:10px; cursor:pointer; transition:all 0.25s; white-space:nowrap; }
+        .btn-primary-grad { background:linear-gradient(90deg,#4f46e5,#7c3aed); color:#fff; }
+        .btn-primary-grad:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(79,70,229,0.35); }
+        .btn-reset { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text-secondary); text-decoration:none; }
+        .btn-reset:hover { background:rgba(255,255,255,0.1); color:var(--text-primary); }
+        .btn-excel { background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.2); color:#6ee7b7; text-decoration:none; }
+        .btn-excel:hover { background:rgba(16,185,129,0.2); transform:translateY(-1px); }
+
+        /* Table card */
+        .table-card { background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; overflow:hidden; }
+        .table-card-header { padding:1rem 1.3rem; border-bottom:1px solid var(--dark-border); display:flex; align-items:center; justify-content:space-between; }
+        .table-card-title { font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:0.5rem; }
+        .table-card-title i { color:#818cf8; }
+        .result-count { font-size:0.75rem; color:var(--text-muted); background:rgba(255,255,255,0.05); border:1px solid var(--dark-border); border-radius:50px; padding:0.2rem 0.7rem; }
+
+        .data-table { width:100%; border-collapse:collapse; }
+        .data-table thead th { padding:0.75rem 1rem; font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:0.09em; color:var(--text-muted); border-bottom:1px solid var(--dark-border); background:rgba(255,255,255,0.02); text-align:left; }
+        .data-table thead th:first-child { padding-left:1.3rem; }
+        .data-table thead th:last-child { padding-right:1.3rem; }
+        .data-table tbody tr { border-bottom:1px solid rgba(255,255,255,0.04); transition:background 0.18s; }
+        .data-table tbody tr:last-child { border-bottom:none; }
+        .data-table tbody tr:hover { background:rgba(79,70,229,0.06); }
+        .data-table td { padding:0.85rem 1rem; vertical-align:middle; font-size:0.85rem; }
+        .data-table td:first-child { padding-left:1.3rem; }
+        .data-table td:last-child { padding-right:1.3rem; }
+
+        .row-num { width:28px;height:28px; border-radius:8px; background:rgba(79,70,229,0.12); border:1px solid rgba(79,70,229,0.2); display:flex;align-items:center;justify-content:center; font-size:0.72rem; font-weight:700; color:#818cf8; }
+
+        .name-cell { display:flex;align-items:center;gap:0.65rem; }
+        .avatar-sm { width:36px;height:36px; border-radius:50%; display:flex;align-items:center;justify-content:center; font-size:0.78rem; font-weight:700; color:#fff; flex-shrink:0; }
+        .name-bold { font-weight:600; color:var(--text-primary); }
+        .name-sub { font-size:0.72rem; color:var(--text-muted); }
+
+        .nim-chip { display:inline-block; padding:0.2rem 0.65rem; background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.2); border-radius:6px; font-size:0.78rem; font-family:'Courier New',monospace; font-weight:600; color:#a5b4fc; }
+
+        .badge-peran { display:inline-flex;align-items:center;gap:0.3rem; padding:0.25rem 0.7rem; border-radius:50px; font-size:0.72rem; font-weight:600; }
+        .badge-mahasiswa { background:rgba(6,182,212,0.12);color:#67e8f9;border:1px solid rgba(6,182,212,0.2); }
+        .badge-dosen     { background:rgba(16,185,129,0.12);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2); }
+        .badge-umum      { background:rgba(148,163,184,0.1);color:#94a3b8;border:1px solid rgba(148,163,184,0.15); }
+
+        .dt-cell { display:flex;flex-direction:column;gap:0.1rem; }
+        .dt-date { font-size:0.82rem;font-weight:600;color:var(--text-primary); }
+        .dt-time { font-size:0.73rem;color:var(--text-muted);display:flex;align-items:center;gap:0.3rem; }
+
+        .empty-state { text-align:center; padding:4rem 2rem; }
+        .empty-icon-wrap { width:72px;height:72px; border-radius:20px; background:rgba(79,70,229,0.1); border:1px solid rgba(79,70,229,0.2); display:flex;align-items:center;justify-content:center; font-size:1.8rem; color:#818cf8; margin:0 auto 1rem; }
+        .empty-title { font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:var(--text-secondary);margin-bottom:0.4rem; }
+        .empty-sub { font-size:0.82rem;color:var(--text-muted); }
+    </style>
+</head>
+<body>
+<div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon"><i class="fa-solid fa-book-open"></i></div>
+            <div>
+                <div class="sidebar-logo-text">Perpustakaan</div>
+                <span class="sidebar-logo-sub">STIKes Panti Waluya</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-label">Menu Utama</div>
+            <a href="{{ route('absensi.admin') }}" class="nav-link">
+                <i class="fa-solid fa-list-check nav-icon"></i>
+                Rekap Kehadiran
+            </a>
+            <a href="{{ route('absensi.admin.anggota') }}" class="nav-link active">
+                <i class="fa-solid fa-users nav-icon"></i>
+                Data Anggota
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="{{ route('absensi.index') }}" class="sidebar-footer-link sidebar-footer-back">
+                <i class="fa-solid fa-arrow-left" style="width:16px;text-align:center;"></i>
+                Form Absensi
+            </a>
+            <form action="{{ route('admin.logout') }}" method="POST" class="sidebar-logout-form">
+                @csrf
+                <button type="submit" class="sidebar-logout-btn">
+                    <i class="fa-solid fa-right-from-bracket" style="width:16px;text-align:center;"></i>
+                    Logout
+                </button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Area -->
+    <div class="main-area">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <h1>Data Anggota Terdaftar</h1>
+                <p>{{ now()->format('l, d F Y') }}</p>
+            </div>
+            <div>
+                <div class="admin-badge">
+                    <div class="admin-avatar"><i class="fa-solid fa-user-shield"></i></div>
+                    Admin
+                </div>
+            </div>
+        </header>
+
+        <!-- Content -->
+        <div class="page-content">
+
+            @if (session('success'))
+                <div class="flash-msg">
+                    <i class="fa-solid fa-circle-check"></i>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <!-- Stat Cards -->
+            <div class="stat-grid">
+                <div class="stat-card" style="--stat-accent:linear-gradient(90deg,#10b981,#06b6d4);">
+                    <div class="stat-icon-wrap" style="background:rgba(16,185,129,0.15);">
+                        <i class="fa-solid fa-users" style="color:#6ee7b7;"></i>
+                    </div>
+                    <div>
+                        <div class="stat-value">{{ $totalAnggota }}</div>
+                        <div class="stat-label">Total Anggota Terdaftar</div>
+                    </div>
+                </div>
+                <div class="stat-card" style="--stat-accent:linear-gradient(90deg,#06b6d4,#4f46e5);">
+                    <div class="stat-icon-wrap" style="background:rgba(6,182,212,0.15);">
+                        <i class="fa-solid fa-graduation-cap" style="color:#67e8f9;"></i>
+                    </div>
+                    <div>
+                        <div class="stat-value">{{ $anggotas->where('peran','Mahasiswa')->count() }}</div>
+                        <div class="stat-label">Anggota Mahasiswa</div>
+                    </div>
+                </div>
+                <div class="stat-card" style="--stat-accent:linear-gradient(90deg,#7c3aed,#4f46e5);">
+                    <div class="stat-icon-wrap" style="background:rgba(124,58,237,0.15);">
+                        <i class="fa-solid fa-chalkboard-user" style="color:#c4b5fd;"></i>
+                    </div>
+                    <div>
+                        <div class="stat-value">{{ $anggotas->where('peran','Dosen/Staff')->count() }}</div>
+                        <div class="stat-label">Dosen / Staff</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filter Card -->
+            <div class="filter-card">
+                <form method="GET" action="{{ route('absensi.admin.anggota') }}">
+                    <div class="filter-form">
+                        <div class="filter-input-wrap">
+                            <i class="fa-solid fa-magnifying-glass filter-input-icon"></i>
+                            <input type="text" name="search" class="filter-input" placeholder="Cari nama atau NIM/NIP..." value="{{ request('search') }}">
+                        </div>
+                        <select name="peran" class="filter-select">
+                            <option value="">— Semua Status —</option>
+                            <option value="Mahasiswa" {{ request('peran') == 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
+                            <option value="Dosen/Staff" {{ request('peran') == 'Dosen/Staff' ? 'selected' : '' }}>Dosen / Staff</option>
+                            <option value="Umum" {{ request('peran') == 'Umum' ? 'selected' : '' }}>Umum</option>
+                        </select>
+                        <div class="filter-btn-group">
+                            <button type="submit" class="btn-filter btn-primary-grad">
+                                <i class="fa-solid fa-filter"></i> Filter
+                            </button>
+                            <a href="{{ route('absensi.admin.anggota') }}" class="btn-filter btn-reset" title="Reset">
+                                <i class="fa-solid fa-rotate-left"></i>
+                            </a>
+                            <a href="{{ route('absensi.admin.anggota.export', request()->query()) }}" class="btn-filter btn-excel">
+                                <i class="fa-solid fa-file-excel"></i> Excel
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Table Card -->
+            <div class="table-card">
+                <div class="table-card-header">
+                    <div class="table-card-title">
+                        <i class="fa-solid fa-id-card"></i>
+                        Master Data Anggota
+                    </div>
+                    <span class="result-count">{{ $totalAnggota }} anggota</span>
+                </div>
+                <div style="overflow-x:auto;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width:50px;">No</th>
+                                <th>Nomor Induk (NIM/NIP)</th>
+                                <th>Nama Lengkap</th>
+                                <th>Status / Peran</th>
+                                <th>Tanggal Daftar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse ($anggotas as $item)
+                                @php
+                                    $nama = $item->nama;
+                                    $initials = strtoupper(substr($nama, 0, 1));
+                                    if (str_word_count($nama) > 1) {
+                                        $parts = explode(' ', $nama);
+                                        $initials = strtoupper(substr($parts[0], 0, 1) . substr($parts[1], 0, 1));
+                                    }
+                                    $colors = ['#4f46e5','#7c3aed','#0891b2','#059669','#dc2626','#d97706','#be185d'];
+                                    $color = $colors[crc32($nama) % count($colors)];
+                                    $badgeClass = match($item->peran) {
+                                        'Mahasiswa'   => 'badge-mahasiswa',
+                                        'Dosen/Staff' => 'badge-dosen',
+                                        default       => 'badge-umum',
+                                    };
+                                @endphp
+                                <tr>
+                                    <td><div class="row-num">{{ $loop->iteration }}</div></td>
+                                    <td><span class="nim-chip">{{ $item->nomor_induk }}</span></td>
+                                    <td>
+                                        <div class="name-cell">
+                                            <div class="avatar-sm" style="background:{{ $color }};">{{ $initials }}</div>
+                                            <div>
+                                                <div class="name-bold">{{ $nama }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><span class="badge-peran {{ $badgeClass }}">{{ $item->peran }}</span></td>
+                                    <td>
+                                        <div class="dt-cell">
+                                            <span class="dt-date">{{ $item->created_at->format('d/m/Y') }}</span>
+                                            <span class="dt-time"><i class="fa-regular fa-clock"></i>{{ $item->created_at->format('H:i') }} WIB</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5">
+                                        <div class="empty-state">
+                                            <div class="empty-icon-wrap"><i class="fa-solid fa-user-slash"></i></div>
+                                            <div class="empty-title">Data anggota tidak ditemukan</div>
+                                            <div class="empty-sub">Coba ubah filter pencarian atau tambah anggota baru lewat form publik.</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div><!-- end page-content -->
+    </div><!-- end main-area -->
+</div><!-- end layout -->
+
+<script>
+    setTimeout(() => {
+        const f = document.querySelector('.flash-msg');
+        if (f) { f.style.transition = 'opacity 0.5s'; f.style.opacity = '0'; setTimeout(() => f.remove(), 500); }
+    }, 5000);
+</script>
+</body>
+</html>
