@@ -1,3 +1,12 @@
+# ================================================================
+#  LARAVEL HTACCESS — SECURITY HARDENED
+#  Sistem Absensi Perpustakaan STIKes Panti Waluya Malang
+#  Perlindungan: Backdoor, Shell Upload, XSS, Injection, dll.
+# ================================================================
+
+# ----------------------------------------------------------------
+# 1. LARAVEL CORE REWRITE (wajib, jangan diubah)
+# ----------------------------------------------------------------
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -13,13 +22,164 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Redirect Trailing Slashes If Not A Folder...
+    # Redirect Trailing Slashes If Not A Folder
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Send Requests To Front Controller...
+    # Send Requests To Front Controller
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
+
+# ----------------------------------------------------------------
+# 2. SEMBUNYIKAN INFORMASI SERVER (jangan bocorkan versi PHP/Apache)
+# ----------------------------------------------------------------
+ServerSignature Off
+<IfModule mod_headers.c>
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+</IfModule>
+
+# ----------------------------------------------------------------
+# 3. BLOKIR AKSES KE FILE BERBAHAYA (Backdoor & Shell)
+#    Mencegah eksekusi file .php yang diupload hacker
+# ----------------------------------------------------------------
+<FilesMatch "\.(php|php3|php4|php5|php7|phtml|phar|pl|py|jsp|asp|aspx|cgi|sh|bash|exe|bat|cmd|vbs|htaccess|htpasswd|ini|log|sql|bak|backup|swp|old|orig|git|env|DS_Store)$">
+    <IfModule mod_authz_core.c>
+        # Apache 2.4+
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        # Apache 2.2
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Izinkan hanya index.php yang jalan (entry point Laravel)
+<Files "index.php">
+    <IfModule mod_authz_core.c>
+        Require all granted
+    </IfModule>
+</Files>
+
+# ----------------------------------------------------------------
+# 4. BLOKIR UPLOAD PHP DI FOLDER STORAGE & PUBLIC/UPLOADS
+#    Jika ada folder upload, PHP di dalamnya tidak boleh dieksekusi
+# ----------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteRule ^storage/.*\.(php|phtml|phar|php3|php4|php5|php7)$ - [F,L]
+    RewriteRule ^uploads/.*\.(php|phtml|phar|php3|php4|php5|php7)$ - [F,L]
+</IfModule>
+
+# ----------------------------------------------------------------
+# 5. BLOKIR AKSES KE FILE SENSITIF LARAVEL
+# ----------------------------------------------------------------
+<FilesMatch "^(\.env|\.env\..*|composer\.json|composer\.lock|package\.json|package-lock\.json|artisan|phpunit\.xml|\.gitignore|\.gitattributes|Makefile|Dockerfile)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# ----------------------------------------------------------------
+# 6. BLOKIR DIRECTORY LISTING (tidak boleh lihat isi folder)
+# ----------------------------------------------------------------
+Options -Indexes
+
+# ----------------------------------------------------------------
+# 7. BLOKIR USER-AGENT BERBAHAYA (scanner & bot hacker)
+# ----------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteCond %{HTTP_USER_AGENT} (havij|nikto|sqlmap|nmap|masscan|acunetix|nessus|openvas|w3af|burpsuite|dirbuster|gobuster|hydra|metasploit|arachni|skipfish|whatweb|wfuzz|wpscan|joomscan|dirb|curl|python-requests|go-http-client|libwww-perl|zgrab|shodan) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# ----------------------------------------------------------------
+# 8. BLOKIR SERANGAN INJEKSI DI URL (SQL Injection, XSS, Path Traversal)
+# ----------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    # Path traversal (../../)
+    RewriteCond %{QUERY_STRING} (\.\./|\.\.%2f|\.\.%5c) [NC]
+    RewriteRule .* - [F,L]
+
+    # SQL Injection patterns
+    RewriteCond %{QUERY_STRING} (union.*select|select.*from|insert.*into|delete.*from|drop.*table|update.*set|exec\(|execute\(|cast\(|convert\(|char\(|nchar\(|varchar\() [NC]
+    RewriteRule .* - [F,L]
+
+    # XSS patterns
+    RewriteCond %{QUERY_STRING} (<script|<iframe|javascript:|vbscript:|onload=|onerror=|onclick=|onmouseover=|alert\(|document\.cookie|document\.write) [NC]
+    RewriteRule .* - [F,L]
+
+    # Remote file inclusion
+    RewriteCond %{QUERY_STRING} (http:|https:|ftp:|php:|data:|phar:) [NC]
+    RewriteRule .* - [F,L]
+
+    # Null byte attacks
+    RewriteCond %{QUERY_STRING} (%00|%0d%0a|\x00) [NC]
+    RewriteRule .* - [F,L]
+</IfModule>
+
+# ----------------------------------------------------------------
+# 9. SECURITY HEADERS (perlindungan browser-level)
+# ----------------------------------------------------------------
+<IfModule mod_headers.c>
+    # Mencegah clickjacking
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Mencegah MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Aktifkan XSS filter browser
+    Header always set X-XSS-Protection "1; mode=block"
+
+    # Paksa HTTPS (aktifkan jika sudah pakai SSL)
+    # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+
+    # Batasi fitur browser berbahaya
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(), usb=()"
+
+    # Referrer Policy
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Content Security Policy — sesuaikan jika butuh CDN tambahan
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com fonts.googleapis.com; style-src 'self' 'unsafe-inline' cdn.jsdelivr.net cdnjs.cloudflare.com fonts.googleapis.com fonts.gstatic.com; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'self';"
+</IfModule>
+
+# ----------------------------------------------------------------
+# 10. BATASI UKURAN REQUEST (cegah DoS/file upload besar)
+# ----------------------------------------------------------------
+<IfModule mod_php.c>
+    php_value upload_max_filesize 5M
+    php_value post_max_size 6M
+    php_value max_execution_time 60
+    php_value max_input_time 60
+</IfModule>
+
+# ----------------------------------------------------------------
+# 11. PROTEKSI HTACCESS ITU SENDIRI
+# ----------------------------------------------------------------
+<Files ".htaccess">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order Allow,Deny
+        Deny from all
+    </IfModule>
+</Files>
+
+# ----------------------------------------------------------------
+# 12. BLOKIR AKSES LANGSUNG KE FOLDER vendor, storage, bootstrap
+# ----------------------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteRule ^vendor/ - [F,L]
+    RewriteRule ^storage/framework/ - [F,L]
+    RewriteRule ^storage/logs/ - [F,L]
+    RewriteRule ^bootstrap/cache/ - [F,L]
 </IfModule>
