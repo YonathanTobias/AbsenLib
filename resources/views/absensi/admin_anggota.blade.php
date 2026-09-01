@@ -18,6 +18,8 @@
             --primary: #4f46e5;
             --secondary: #7c3aed;
             --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
             --dark-bg: #0f172a;
             --dark-card: #1e293b;
             --dark-border: rgba(255,255,255,0.07);
@@ -93,8 +95,9 @@
         /* Page content */
         .page-content { padding: 2rem; }
 
-        /* Flash */
+        /* Flash Messages */
         .flash-msg { display:flex; align-items:center; gap:0.65rem; background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.2); border-radius:12px; padding:0.85rem 1rem; color:#6ee7b7; font-size:0.84rem; font-weight:500; margin-bottom:1.5rem; animation:slideDown 0.3s ease; }
+        .flash-error { display:flex; align-items:center; gap:0.65rem; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); border-radius:12px; padding:0.85rem 1rem; color:#fca5a5; font-size:0.84rem; font-weight:500; margin-bottom:1.5rem; animation:slideDown 0.3s ease; }
         @keyframes slideDown { from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);} }
 
         /* Stat grid */
@@ -161,10 +164,122 @@
         .dt-date { font-size:0.82rem;font-weight:600;color:var(--text-primary); }
         .dt-time { font-size:0.73rem;color:var(--text-muted);display:flex;align-items:center;gap:0.3rem; }
 
+        /* Action Buttons */
+        .action-btn-group { display:flex; align-items:center; justify-content:center; gap:0.45rem; }
+        .btn-action {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-action-edit {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.25);
+            color: #fbbf24;
+        }
+        .btn-action-edit:hover {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+        .btn-action-delete {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #f87171;
+        }
+        .btn-action-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        }
+
         .empty-state { text-align:center; padding:4rem 2rem; }
         .empty-icon-wrap { width:72px;height:72px; border-radius:20px; background:rgba(79,70,229,0.1); border:1px solid rgba(79,70,229,0.2); display:flex;align-items:center;justify-content:center; font-size:1.8rem; color:#818cf8; margin:0 auto 1rem; }
         .empty-title { font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:var(--text-secondary);margin-bottom:0.4rem; }
         .empty-sub { font-size:0.82rem;color:var(--text-muted); }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal-box {
+            background: #1e293b;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+            overflow: hidden;
+            animation: modalIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes modalIn { from { opacity:0; transform:scale(0.92) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        .modal-hdr {
+            padding: 1.2rem 1.5rem;
+            background: linear-gradient(90deg, #1e1b4b, #312e81);
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-ttl { font-family:'Poppins',sans-serif; font-size:0.95rem; font-weight:700; color:#fff; display:flex; align-items:center; gap:0.5rem; }
+        .modal-cls { background:rgba(255,255,255,0.1); border:none; border-radius:50%; width:28px; height:28px; cursor:pointer; color:#fff; display:flex; align-items:center; justify-content:center; font-size:0.85rem; transition:background 0.2s; }
+        .modal-cls:hover { background:rgba(255,255,255,0.2); }
+        .modal-bdy { padding:1.5rem; }
+        .modal-ftr { padding:1rem 1.5rem; border-top:1px solid rgba(255,255,255,0.07); display:flex; gap:0.65rem; justify-content:flex-end; }
+
+        .modal-grp { margin-bottom: 1rem; }
+        .modal-lbl { display:block; font-size:0.73rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:0.4rem; }
+        .modal-input {
+            width: 100%;
+            padding: 0.72rem 1rem;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,255,255,0.09);
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.2s;
+            color-scheme: dark;
+        }
+        .modal-input:focus { border-color: #6366f1; background:rgba(79,70,229,0.07); box-shadow:0 0 0 3px rgba(79,70,229,0.12); }
+        .modal-hint { font-size:0.72rem; color:var(--text-muted); margin-top:0.3rem; }
+
+        .btn-m-cancel {
+            padding:0.6rem 1.1rem; font-size:0.83rem; font-weight:600;
+            color:var(--text-secondary); background:rgba(255,255,255,0.05);
+            border:1px solid rgba(255,255,255,0.08); border-radius:10px; cursor:pointer;
+            font-family:'Inter',sans-serif; transition:all 0.2s;
+        }
+        .btn-m-cancel:hover { background:rgba(255,255,255,0.1); color:var(--text-primary); }
+        .btn-m-save {
+            padding:0.6rem 1.3rem; font-size:0.83rem; font-weight:700;
+            color:#fff; background:linear-gradient(90deg,#4f46e5,#7c3aed);
+            border:none; border-radius:10px; cursor:pointer;
+            font-family:'Poppins',sans-serif; transition:all 0.25s;
+        }
+        .btn-m-save:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(79,70,229,0.4); }
+        .btn-m-delete {
+            padding:0.6rem 1.3rem; font-size:0.83rem; font-weight:700;
+            color:#fff; background:linear-gradient(90deg,#dc2626,#ef4444);
+            border:none; border-radius:10px; cursor:pointer;
+            font-family:'Poppins',sans-serif; transition:all 0.25s;
+        }
+        .btn-m-delete:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(239,68,68,0.4); }
     </style>
 </head>
 <body>
@@ -229,6 +344,20 @@
                 <div class="flash-msg">
                     <i class="fa-solid fa-circle-check"></i>
                     {{ session('success') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="flash-error">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <strong>Gagal menyimpan data:</strong>
+                        <ul style="margin: 0.3rem 0 0 1.2rem; padding: 0;">
+                            @foreach ($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             @endif
 
@@ -310,6 +439,7 @@
                                 <th>Nama Lengkap</th>
                                 <th>Status / Peran</th>
                                 <th>Tanggal Daftar</th>
+                                <th style="width:100px; text-align:center;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -347,10 +477,24 @@
                                             <span class="dt-time"><i class="fa-regular fa-clock"></i>{{ $item->created_at->format('H:i') }} WIB</span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="action-btn-group">
+                                            <button type="button" class="btn-action btn-action-edit"
+                                                onclick="openEditAnggotaModal({{ $item->id }}, '{{ addslashes($item->nomor_induk) }}', '{{ addslashes($item->nama) }}', '{{ addslashes($item->peran) }}')"
+                                                title="Edit Anggota">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btn-action btn-action-delete"
+                                                onclick="openDeleteAnggotaModal({{ $item->id }}, '{{ addslashes($item->nama) }}', '{{ addslashes($item->nomor_induk) }}')"
+                                                title="Hapus Anggota">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5">
+                                    <td colspan="6">
                                         <div class="empty-state">
                                             <div class="empty-icon-wrap"><i class="fa-solid fa-user-slash"></i></div>
                                             <div class="empty-title">Data anggota tidak ditemukan</div>
@@ -368,11 +512,106 @@
     </div><!-- end main-area -->
 </div><!-- end layout -->
 
+<!-- ===== MODAL EDIT ANGGOTA ===== -->
+<div class="modal-overlay" id="modalEditAnggota" onclick="if(event.target===this) closeEditAnggotaModal()">
+    <div class="modal-box">
+        <div class="modal-hdr">
+            <div class="modal-ttl"><i class="fa-solid fa-user-pen"></i>Edit Data Anggota</div>
+            <button type="button" class="modal-cls" onclick="closeEditAnggotaModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="formEditAnggota" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="modal-bdy">
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="edit_nomor_induk">Nomor Induk (NIM/NIP)</label>
+                    <input type="text" class="modal-input" id="edit_nomor_induk" name="nomor_induk" placeholder="Contoh: 210101050" required autocomplete="off">
+                </div>
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="edit_nama">Nama Lengkap</label>
+                    <input type="text" class="modal-input" id="edit_nama" name="nama" placeholder="Contoh: Ahmad Subagja" required>
+                </div>
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="edit_peran">Status / Peran</label>
+                    <select class="modal-input" id="edit_peran" name="peran" required style="appearance:none; background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E&quot;); background-repeat:no-repeat; background-position:right 0.8rem center; background-size:14px; padding-right:2.5rem;">
+                        <option value="Mahasiswa">Mahasiswa</option>
+                        <option value="Dosen/Staff">Dosen / Staff</option>
+                        <option value="Umum">Umum</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-ftr">
+                <button type="button" class="btn-m-cancel" onclick="closeEditAnggotaModal()">Batal</button>
+                <button type="submit" class="btn-m-save"><i class="fa-solid fa-check" style="margin-right:0.4rem;"></i>Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL KONFIRMASI HAPUS ANGGOTA ===== -->
+<div class="modal-overlay" id="modalDeleteAnggota" onclick="if(event.target===this) closeDeleteAnggotaModal()">
+    <div class="modal-box" style="max-width:420px;">
+        <div class="modal-hdr" style="background: linear-gradient(90deg, #7f1d1d, #991b1b);">
+            <div class="modal-ttl"><i class="fa-solid fa-triangle-exclamation"></i>Konfirmasi Hapus</div>
+            <button type="button" class="modal-cls" onclick="closeDeleteAnggotaModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="formDeleteAnggota" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="modal-bdy" style="text-align:center; padding:1.8rem 1.5rem 1.2rem;">
+                <div style="width:54px; height:54px; border-radius:50%; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; color:#f87171; font-size:1.4rem;">
+                    <i class="fa-solid fa-trash-can"></i>
+                </div>
+                <h4 style="font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; color:var(--text-primary); margin-bottom:0.5rem;">Hapus Anggota Ini?</h4>
+                <p style="font-size:0.83rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.8rem;">
+                    Apakah Anda yakin ingin menghapus data <strong id="delete_nama_text" style="color:#f87171;"></strong> (<span id="delete_nim_text"></span>)?
+                </p>
+                <p style="font-size:0.75rem; color:#fca5a5; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.18); border-radius:8px; padding:0.6rem 0.8rem; line-height:1.4;">
+                    <i class="fa-solid fa-circle-exclamation" style="color:#f87171; margin-right:4px;"></i>
+                    Perhatian: Seluruh riwayat absensi terkait anggota ini juga akan dihapus permanen!
+                </p>
+            </div>
+            <div class="modal-ftr" style="justify-content:center; gap:0.8rem; padding:1rem 1.5rem 1.3rem;">
+                <button type="button" class="btn-m-cancel" onclick="closeDeleteAnggotaModal()">Batal</button>
+                <button type="submit" class="btn-m-delete"><i class="fa-solid fa-trash-can" style="margin-right:0.4rem;"></i>Hapus Sekarang</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
+    // Auto-dismiss alerts
     setTimeout(() => {
         const f = document.querySelector('.flash-msg');
         if (f) { f.style.transition = 'opacity 0.5s'; f.style.opacity = '0'; setTimeout(() => f.remove(), 500); }
     }, 5000);
+
+    // Edit Modal functions
+    function openEditAnggotaModal(id, nomor_induk, nama, peran) {
+        const form = document.getElementById('formEditAnggota');
+        form.action = "{{ url('/admin/anggota') }}/" + id;
+        document.getElementById('edit_nomor_induk').value = nomor_induk;
+        document.getElementById('edit_nama').value = nama;
+        document.getElementById('edit_peran').value = peran;
+        document.getElementById('modalEditAnggota').classList.add('show');
+    }
+
+    function closeEditAnggotaModal() {
+        document.getElementById('modalEditAnggota').classList.remove('show');
+    }
+
+    // Delete Modal functions
+    function openDeleteAnggotaModal(id, nama, nomor_induk) {
+        const form = document.getElementById('formDeleteAnggota');
+        form.action = "{{ url('/admin/anggota') }}/" + id;
+        document.getElementById('delete_nama_text').textContent = nama;
+        document.getElementById('delete_nim_text').textContent = nomor_induk;
+        document.getElementById('modalDeleteAnggota').classList.add('show');
+    }
+
+    function closeDeleteAnggotaModal() {
+        document.getElementById('modalDeleteAnggota').classList.remove('show');
+    }
 </script>
 </body>
 </html>

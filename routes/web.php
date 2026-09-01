@@ -25,7 +25,11 @@ Route::middleware(['admin.password'])->group(function () {
     
     Route::get('/admin/anggota', [AbsensiController::class, 'anggota'])->name('absensi.admin.anggota');
     Route::get('/admin/anggota/export', [AbsensiController::class, 'exportAnggota'])->name('absensi.admin.anggota.export');
-    
+
+    // ROUTE UPDATE & DELETE ANGGOTA
+    Route::put('/admin/anggota/{id}', [AbsensiController::class, 'updateAnggota'])->name('absensi.admin.anggota.update');
+    Route::delete('/admin/anggota/{id}', [AbsensiController::class, 'destroyAnggota'])->name('absensi.admin.anggota.destroy');
+
     // ROUTE TAMBAH ABSENSI MANUAL ADMIN
     Route::post('/admin/absensi/store-manual', [AbsensiController::class, 'storeManual'])->name('absensi.admin.store_manual');
 });

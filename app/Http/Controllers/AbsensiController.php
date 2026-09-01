@@ -215,4 +215,40 @@ class AbsensiController extends Controller
         return redirect()->route('absensi.admin')
             ->with('success', "Kehadiran untuk {$anggota->nama} ({$anggota->nomor_induk}) berhasil ditambahkan secara manual!");
     }
+
+    // Update Data Anggota
+    public function updateAnggota(Request $request, $id)
+    {
+        $anggota = \App\Models\Anggota::findOrFail($id);
+
+        $validated = $request->validate([
+            'nomor_induk' => 'required|string|unique:anggotas,nomor_induk,' . $id,
+            'nama'        => 'required|string|max:255',
+            'peran'       => 'required|in:Mahasiswa,Dosen/Staff,Umum',
+        ], [
+            'nomor_induk.required' => 'NIM/NIP/NIS wajib diisi.',
+            'nomor_induk.unique'   => 'NIM/NIP/NIS ini sudah dipakai anggota lain.',
+            'nama.required'        => 'Nama lengkap wajib diisi.',
+            'peran.required'       => 'Status/peran wajib dipilih.',
+        ]);
+
+        $anggota->update($validated);
+
+        return redirect()->route('absensi.admin.anggota')
+            ->with('success', "Data anggota {$anggota->nama} berhasil diperbarui!");
+    }
+
+    // Hapus Data Anggota
+    public function destroyAnggota($id)
+    {
+        $anggota = \App\Models\Anggota::findOrFail($id);
+        $nama    = $anggota->nama;
+
+        // Hapus juga semua riwayat absensi anggota ini
+        $anggota->absensis()->delete();
+        $anggota->delete();
+
+        return redirect()->route('absensi.admin.anggota')
+            ->with('success', "Anggota {$nama} beserta seluruh riwayat absensinya berhasil dihapus.");
+    }
 }
