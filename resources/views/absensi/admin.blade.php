@@ -631,6 +631,26 @@
         .btn-m-delete:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(239,68,68,0.4); }
 
         .flash-error { display:flex; align-items:center; gap:0.65rem; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); border-radius:12px; padding:0.85rem 1rem; color:#fca5a5; font-size:0.84rem; font-weight:500; margin-bottom:1.5rem; animation:slideDown 0.3s ease; }
+
+        .btn-topbar-action {
+            display: flex; align-items: center; gap: 0.45rem;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50px;
+            padding: 0.4rem 0.9rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-topbar-action:hover {
+            background: rgba(79,70,229,0.15);
+            border-color: rgba(79,70,229,0.3);
+            color: #a5b4fc;
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 <body>
@@ -654,6 +674,11 @@
             <a href="{{ route('absensi.admin.anggota') }}" class="nav-link">
                 <i class="fa-solid fa-users nav-icon"></i>
                 Data Anggota
+            </a>
+            <div class="sidebar-label">Pengaturan</div>
+            <a href="javascript:void(0)" onclick="openModalGantiPassword()" class="nav-link">
+                <i class="fa-solid fa-key nav-icon"></i>
+                Ganti Password
             </a>
         </nav>
         <div class="sidebar-footer">
@@ -681,9 +706,13 @@
                 <p>{{ now()->format('l, d F Y') }}</p>
             </div>
             <div class="topbar-right">
+                <button type="button" class="btn-topbar-action" onclick="openModalGantiPassword()" title="Ganti Username & Password">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Ganti Password</span>
+                </button>
                 <div class="admin-badge">
                     <div class="admin-avatar"><i class="fa-solid fa-user-shield"></i></div>
-                    Admin
+                    {{ session('admin_username', 'Admin') }}
                 </div>
             </div>
         </header>
@@ -949,6 +978,57 @@
     </div>
 </div>
 
+<!-- ===== MODAL GANTI PASSWORD ===== -->
+<div class="modal-overlay" id="modalGantiPassword" onclick="if(event.target===this) closeModalGantiPassword()">
+    <div class="modal-box" style="max-width:440px;">
+        <div class="modal-hdr" style="background: linear-gradient(90deg, #312e81, #4c1d95);">
+            <div class="modal-ttl"><i class="fa-solid fa-shield-halved"></i>Ganti Username & Password</div>
+            <button type="button" class="modal-cls" onclick="closeModalGantiPassword()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form action="{{ route('admin.change_password') }}" method="POST">
+            @csrf
+            <div class="modal-bdy">
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="pw_password_lama">Password Saat Ini</label>
+                    <div style="position:relative;">
+                        <input type="password" class="modal-input" id="pw_password_lama" name="password_lama" placeholder="Masukkan password saat ini..." required style="padding-right:2.8rem;">
+                        <button type="button" onclick="toggleModalPw('pw_password_lama', this)" style="position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="pw_username_baru">Username Baru</label>
+                    <input type="text" class="modal-input" id="pw_username_baru" name="username_baru" value="{{ session('admin_username', 'admin') }}" placeholder="Contoh: admin" required autocomplete="off">
+                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#818cf8; margin-right:4px;"></i>Bisa tetap pakai username lama atau buat baru.</p>
+                </div>
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="pw_password_baru">Password Baru</label>
+                    <div style="position:relative;">
+                        <input type="password" class="modal-input" id="pw_password_baru" name="password_baru" placeholder="Minimal 4 karakter..." required style="padding-right:2.8rem;">
+                        <button type="button" onclick="toggleModalPw('pw_password_baru', this)" style="position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="pw_password_baru_confirmation">Konfirmasi Password Baru</label>
+                    <div style="position:relative;">
+                        <input type="password" class="modal-input" id="pw_password_baru_confirmation" name="password_baru_confirmation" placeholder="Ketik ulang password baru..." required style="padding-right:2.8rem;">
+                        <button type="button" onclick="toggleModalPw('pw_password_baru_confirmation', this)" style="position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); background:none; border:none; color:#64748b; cursor:pointer;">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-ftr">
+                <button type="button" class="btn-m-cancel" onclick="closeModalGantiPassword()">Batal</button>
+                <button type="submit" class="btn-m-save"><i class="fa-solid fa-key" style="margin-right:0.4rem;"></i>Simpan Kredensial</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
     // Auto-dismiss alerts
     setTimeout(() => {
@@ -984,6 +1064,27 @@
 
     function closeDeleteAbsenModal() {
         document.getElementById('modalDeleteAbsen').classList.remove('show');
+    }
+
+    // Ganti Password Modal functions
+    function openModalGantiPassword() {
+        document.getElementById('modalGantiPassword').classList.add('show');
+    }
+
+    function closeModalGantiPassword() {
+        document.getElementById('modalGantiPassword').classList.remove('show');
+    }
+
+    function toggleModalPw(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const icon = btn.querySelector('i');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fa-solid fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fa-solid fa-eye';
+        }
     }
 </script>
 </body>

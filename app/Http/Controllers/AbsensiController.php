@@ -135,6 +135,32 @@ class AbsensiController extends Controller
         return view('absensi.admin_login');
     }
 
+    // Helper: Ambil kredensial admin (dari file JSON atau fallback)
+    private function getAdminCredentials()
+    {
+        $path = storage_path('app/admin_credential.json');
+        if (file_exists($path)) {
+            $data = json_decode(file_get_contents($path), true);
+            if (!empty($data['username']) && !empty($data['password'])) {
+                return $data;
+            }
+        }
+
+        return [
+            'username' => env('ADMIN_USERNAME', 'admin'),
+            'password' => env('ADMIN_PASSWORD', 'admin123'),
+        ];
+    }
+
+    // Helper: Verifikasi password (mendukung Hash bcrypt maupun plaintext fallback)
+    private function verifyAdminPassword($inputPassword, $storedPassword)
+    {
+        if (str_starts_with($storedPassword, '$2y$') || str_starts_with($storedPassword, '$2a$')) {
+            return \Illuminate\Support\Facades\Hash::check($inputPassword, $storedPassword);
+        }
+        return hash_equals($storedPassword, $inputPassword);
+    }
+
     // Proses Verifikasi Username & Password
     public function loginProcess(Request $request)
     {
@@ -146,21 +172,16 @@ class AbsensiController extends Controller
             'password.required' => 'Password wajib diisi.',
         ]);
 
-        // =====================================================
-        // KREDENSIAL ADMIN — Ganti sesuai kebutuhan
-        // =====================================================
-        $usernameBenar = 'admin';
-        $passwordBenar = 'admin123';
-        // =====================================================
+        $creds = $this->getAdminCredentials();
 
         // Cek username DAN password sekaligus (hindari user enumeration)
-        if ($request->username === $usernameBenar && $request->password === $passwordBenar) {
+        if ($request->username === $creds['username'] && $this->verifyAdminPassword($request->password, $creds['password'])) {
             session([
                 'admin_authenticated' => true,
                 'admin_username'      => $request->username,
                 'admin_login_at'      => now()->toDateTimeString(),
             ]);
-            return redirect()->route('absensi.admin')->with('success', 'Selamat datang, ' . $usernameBenar . '! Anda berhasil masuk.');
+            return redirect()->route('absensi.admin')->with('success', 'Selamat datang, ' . $request->username . '! Anda berhasil masuk.');
         }
 
         // Delay kecil untuk mencegah brute-force
@@ -169,6 +190,43 @@ class AbsensiController extends Controller
         return redirect()->back()
             ->withInput($request->only('username'))
             ->with('error', 'Username atau password yang Anda masukkan salah!');
+    }
+
+    // Update Kredensial / Password Admin dari Dashboard
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'password_lama'          => 'required',
+            'username_baru'          => 'required|string|min:3|max:50',
+            'password_baru'          => 'required|string|min:4|confirmed',
+        ], [
+            'password_lama.required'  => 'Password saat ini wajib diisi.',
+            'username_baru.required'  => 'Username baru wajib diisi.',
+            'username_baru.min'       => 'Username minimal 3 karakter.',
+            'password_baru.required'  => 'Password baru wajib diisi.',
+            'password_baru.min'       => 'Password baru minimal 4 karakter.',
+            'password_baru.confirmed' => 'Konfirmasi password baru tidak cocok.',
+        ]);
+
+        $creds = $this->getAdminCredentials();
+
+        if (!$this->verifyAdminPassword($request->password_lama, $creds['password'])) {
+            return redirect()->back()->withErrors(['password_lama' => 'Password saat ini yang Anda masukkan salah!']);
+        }
+
+        $newCreds = [
+            'username'   => $request->username_baru,
+            'password'   => \Illuminate\Support\Facades\Hash::make($request->password_baru),
+            'updated_at' => now()->toDateTimeString(),
+        ];
+
+        // Simpan ke storage/app/admin_credential.json
+        file_put_contents(storage_path('app/admin_credential.json'), json_encode($newCreds, JSON_PRETTY_PRINT));
+
+        // Update session username aktif
+        session(['admin_username' => $request->username_baru]);
+
+        return redirect()->back()->with('success', 'Kredensial admin (username & password) berhasil diperbarui!');
     }
 
     // Logout Admin

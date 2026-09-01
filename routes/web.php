@@ -34,4 +34,7 @@ Route::middleware(['admin.password'])->group(function () {
     Route::post('/admin/absensi/store-manual', [AbsensiController::class, 'storeManual'])->name('absensi.admin.store_manual');
     Route::put('/admin/absensi/{id}', [AbsensiController::class, 'updateAbsensi'])->name('absensi.admin.update');
     Route::delete('/admin/absensi/{id}', [AbsensiController::class, 'destroyAbsensi'])->name('absensi.admin.destroy');
+
+    // ROUTE GANTI USERNAME & PASSWORD ADMIN
+    Route::post('/admin/change-password', [AbsensiController::class, 'updatePassword'])->name('admin.change_password');
 });
