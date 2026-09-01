@@ -588,6 +588,49 @@
             font-family:'Poppins',sans-serif; transition:all 0.25s;
         }
         .btn-m-save:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(79,70,229,0.4); }
+
+        /* Action Buttons */
+        .action-btn-group { display:flex; align-items:center; justify-content:center; gap:0.45rem; }
+        .btn-action {
+            width: 32px; height: 32px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .btn-action-edit {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(245, 158, 11, 0.25);
+            color: #fbbf24;
+        }
+        .btn-action-edit:hover {
+            background: rgba(245, 158, 11, 0.25);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+        }
+        .btn-action-delete {
+            background: rgba(239, 68, 68, 0.12);
+            border-color: rgba(239, 68, 68, 0.25);
+            color: #f87171;
+        }
+        .btn-action-delete:hover {
+            background: rgba(239, 68, 68, 0.25);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+        }
+        .btn-m-delete {
+            padding:0.6rem 1.3rem; font-size:0.83rem; font-weight:700;
+            color:#fff; background:linear-gradient(90deg,#dc2626,#ef4444);
+            border:none; border-radius:10px; cursor:pointer;
+            font-family:'Poppins',sans-serif; transition:all 0.25s;
+        }
+        .btn-m-delete:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(239,68,68,0.4); }
+
+        .flash-error { display:flex; align-items:center; gap:0.65rem; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.2); border-radius:12px; padding:0.85rem 1rem; color:#fca5a5; font-size:0.84rem; font-weight:500; margin-bottom:1.5rem; animation:slideDown 0.3s ease; }
     </style>
 </head>
 <body>
@@ -652,6 +695,20 @@
                 <div class="flash-msg">
                     <i class="fa-solid fa-circle-check"></i>
                     {{ session('success') }}
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="flash-error">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <div>
+                        <strong>Gagal menyimpan data:</strong>
+                        <ul style="margin: 0.3rem 0 0 1.2rem; padding: 0;">
+                            @foreach ($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             @endif
 
@@ -722,6 +779,7 @@
                                 <th>Nama Lengkap</th>
                                 <th>Nomor Induk</th>
                                 <th>Status / Peran</th>
+                                <th style="width:100px; text-align:center;">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -760,10 +818,24 @@
                                     </td>
                                     <td><span class="nim-chip">{{ $item->anggota->nomor_induk ?? '-' }}</span></td>
                                     <td><span class="badge-peran {{ $badgeClass }}">{{ $peran }}</span></td>
+                                    <td>
+                                        <div class="action-btn-group">
+                                            <button type="button" class="btn-action btn-action-edit"
+                                                onclick="openEditAbsenModal({{ $item->id }}, '{{ addslashes($item->anggota->nomor_induk ?? '') }}', '{{ $item->created_at->format('Y-m-d') }}', '{{ $item->created_at->format('H:i') }}')"
+                                                title="Edit Kehadiran">
+                                                <i class="fa-solid fa-pen-to-square"></i>
+                                            </button>
+                                            <button type="button" class="btn-action btn-action-delete"
+                                                onclick="openDeleteAbsenModal({{ $item->id }}, '{{ addslashes($nama) }}', '{{ addslashes($item->anggota->nomor_induk ?? '-') }}', '{{ $item->created_at->format('d/m/Y H:i') }}')"
+                                                title="Hapus Kehadiran">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </div>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5">
+                                    <td colspan="6">
                                         <div class="empty-state">
                                             <div class="empty-icon-wrap"><i class="fa-solid fa-folder-open"></i></div>
                                             <div class="empty-title">Data tidak ditemukan</div>
@@ -813,12 +885,106 @@
     </div>
 </div>
 
+<!-- ===== MODAL EDIT ABSEN ===== -->
+<div class="modal-overlay" id="modalEditAbsen" onclick="if(event.target===this) closeEditAbsenModal()">
+    <div class="modal-box">
+        <div class="modal-hdr">
+            <div class="modal-ttl"><i class="fa-solid fa-pen-to-square"></i>Edit Data Kehadiran</div>
+            <button type="button" class="modal-cls" onclick="closeEditAbsenModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="formEditAbsen" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="modal-bdy">
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="edit_nomor_induk">NIM / NIP / Nomor Induk</label>
+                    <input type="text" class="modal-input" id="edit_nomor_induk" name="nomor_induk" placeholder="Masukkan NIM terdaftar..." required autocomplete="off">
+                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#818cf8; margin-right:4px;"></i>Pastikan NIM sudah terdaftar di Data Anggota.</p>
+                </div>
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="edit_tanggal">Tanggal</label>
+                    <input type="date" class="modal-input" id="edit_tanggal" name="tanggal" required>
+                </div>
+                <div class="modal-grp">
+                    <label class="modal-lbl" for="edit_jam">Jam</label>
+                    <input type="time" class="modal-input" id="edit_jam" name="jam" required>
+                </div>
+            </div>
+            <div class="modal-ftr">
+                <button type="button" class="btn-m-cancel" onclick="closeEditAbsenModal()">Batal</button>
+                <button type="submit" class="btn-m-save"><i class="fa-solid fa-check" style="margin-right:0.4rem;"></i>Simpan Perubahan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== MODAL KONFIRMASI HAPUS ABSEN ===== -->
+<div class="modal-overlay" id="modalDeleteAbsen" onclick="if(event.target===this) closeDeleteAbsenModal()">
+    <div class="modal-box" style="max-width:420px;">
+        <div class="modal-hdr" style="background: linear-gradient(90deg, #7f1d1d, #991b1b);">
+            <div class="modal-ttl"><i class="fa-solid fa-triangle-exclamation"></i>Konfirmasi Hapus Kehadiran</div>
+            <button type="button" class="modal-cls" onclick="closeDeleteAbsenModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <form id="formDeleteAbsen" method="POST">
+            @csrf
+            @method('DELETE')
+            <div class="modal-bdy" style="text-align:center; padding:1.8rem 1.5rem 1.2rem;">
+                <div style="width:54px; height:54px; border-radius:50%; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.3); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; color:#f87171; font-size:1.4rem;">
+                    <i class="fa-solid fa-trash-can"></i>
+                </div>
+                <h4 style="font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; color:var(--text-primary); margin-bottom:0.5rem;">Hapus Riwayat Kehadiran Ini?</h4>
+                <p style="font-size:0.83rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.8rem;">
+                    Apakah Anda yakin ingin menghapus data kehadiran <strong id="delete_absen_nama" style="color:#f87171;"></strong> (<span id="delete_absen_nim"></span>) pada <span id="delete_absen_waktu" style="color:#a5b4fc; font-weight:600;"></span> WIB?
+                </p>
+                <p style="font-size:0.75rem; color:#fca5a5; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.18); border-radius:8px; padding:0.6rem 0.8rem; line-height:1.4;">
+                    <i class="fa-solid fa-circle-exclamation" style="color:#f87171; margin-right:4px;"></i>
+                    Data riwayat kehadiran ini akan dihapus permanen dari sistem.
+                </p>
+            </div>
+            <div class="modal-ftr" style="justify-content:center; gap:0.8rem; padding:1rem 1.5rem 1.3rem;">
+                <button type="button" class="btn-m-cancel" onclick="closeDeleteAbsenModal()">Batal</button>
+                <button type="submit" class="btn-m-delete"><i class="fa-solid fa-trash-can" style="margin-right:0.4rem;"></i>Hapus Sekarang</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
-    // Auto-dismiss flash
+    // Auto-dismiss alerts
     setTimeout(() => {
         const f = document.querySelector('.flash-msg');
         if (f) { f.style.transition = 'opacity 0.5s'; f.style.opacity = '0'; setTimeout(() => f.remove(), 500); }
+        const err = document.querySelector('.flash-error');
+        if (err) { err.style.transition = 'opacity 0.5s'; err.style.opacity = '0'; setTimeout(() => err.remove(), 500); }
     }, 5000);
+
+    // Edit Absen Modal functions
+    function openEditAbsenModal(id, nomor_induk, tanggal, jam) {
+        const form = document.getElementById('formEditAbsen');
+        form.action = "{{ url('/admin/absensi') }}/" + id;
+        document.getElementById('edit_nomor_induk').value = nomor_induk;
+        document.getElementById('edit_tanggal').value = tanggal;
+        document.getElementById('edit_jam').value = jam;
+        document.getElementById('modalEditAbsen').classList.add('show');
+    }
+
+    function closeEditAbsenModal() {
+        document.getElementById('modalEditAbsen').classList.remove('show');
+    }
+
+    // Delete Absen Modal functions
+    function openDeleteAbsenModal(id, nama, nomor_induk, waktu) {
+        const form = document.getElementById('formDeleteAbsen');
+        form.action = "{{ url('/admin/absensi') }}/" + id;
+        document.getElementById('delete_absen_nama').textContent = nama;
+        document.getElementById('delete_absen_nim').textContent = nomor_induk;
+        document.getElementById('delete_absen_waktu').textContent = waktu;
+        document.getElementById('modalDeleteAbsen').classList.add('show');
+    }
+
+    function closeDeleteAbsenModal() {
+        document.getElementById('modalDeleteAbsen').classList.remove('show');
+    }
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ class Absensi extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['anggota_id'];
+    protected $fillable = ['anggota_id', 'created_at', 'updated_at'];
 
     public function anggota()
     {

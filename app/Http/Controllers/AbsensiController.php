@@ -251,4 +251,45 @@ class AbsensiController extends Controller
         return redirect()->route('absensi.admin.anggota')
             ->with('success', "Anggota {$nama} beserta seluruh riwayat absensinya berhasil dihapus.");
     }
+
+    // Update Data Kehadiran / Absensi
+    public function updateAbsensi(Request $request, $id)
+    {
+        $absensi = \App\Models\Absensi::findOrFail($id);
+
+        $request->validate([
+            'nomor_induk' => 'required|exists:anggotas,nomor_induk',
+            'tanggal'     => 'required|date',
+            'jam'         => 'required',
+        ], [
+            'nomor_induk.required' => 'NIM / Nomor Induk wajib diisi.',
+            'nomor_induk.exists'   => 'NIM / Nomor Induk tidak ditemukan di sistem.',
+            'tanggal.required'     => 'Tanggal wajib diisi.',
+            'jam.required'         => 'Jam wajib diisi.',
+        ]);
+
+        $anggota = \App\Models\Anggota::where('nomor_induk', $request->nomor_induk)->first();
+        $createdAt = $request->tanggal . ' ' . $request->jam . ':00';
+
+        $absensi->anggota_id = $anggota->id;
+        $absensi->created_at = $createdAt;
+        $absensi->updated_at = now();
+        $absensi->save();
+
+        return redirect()->route('absensi.admin')
+            ->with('success', "Data kehadiran untuk {$anggota->nama} berhasil diperbarui!");
+    }
+
+    // Hapus Data Kehadiran / Absensi
+    public function destroyAbsensi($id)
+    {
+        $absensi = \App\Models\Absensi::with('anggota')->findOrFail($id);
+        $nama = $absensi->anggota->nama ?? 'Pengunjung';
+        $waktu = $absensi->created_at->format('d/m/Y H:i');
+
+        $absensi->delete();
+
+        return redirect()->route('absensi.admin')
+            ->with('success', "Data kehadiran {$nama} pada {$waktu} WIB berhasil dihapus.");
+    }
 }
