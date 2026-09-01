@@ -135,24 +135,40 @@ class AbsensiController extends Controller
         return view('absensi.admin_login');
     }
 
-    // Proses Verifikasi Password
+    // Proses Verifikasi Username & Password
     public function loginProcess(Request $request)
     {
         $request->validate([
-            'password' => 'required',
+            'username' => 'required|string',
+            'password' => 'required|string',
         ], [
+            'username.required' => 'Username wajib diisi.',
             'password.required' => 'Password wajib diisi.',
         ]);
 
-        // SET PASSWORD ADMIN DI SINI (Misal: admin123)
+        // =====================================================
+        // KREDENSIAL ADMIN — Ganti sesuai kebutuhan
+        // =====================================================
+        $usernameBenar = 'admin';
         $passwordBenar = 'admin123';
+        // =====================================================
 
-        if ($request->password === $passwordBenar) {
-            session(['admin_authenticated' => true]);
-            return redirect()->route('absensi.admin')->with('success', 'Berhasil masuk sebagai Admin!');
+        // Cek username DAN password sekaligus (hindari user enumeration)
+        if ($request->username === $usernameBenar && $request->password === $passwordBenar) {
+            session([
+                'admin_authenticated' => true,
+                'admin_username'      => $request->username,
+                'admin_login_at'      => now()->toDateTimeString(),
+            ]);
+            return redirect()->route('absensi.admin')->with('success', 'Selamat datang, ' . $usernameBenar . '! Anda berhasil masuk.');
         }
 
-        return redirect()->back()->with('error', 'Password yang Anda masukkan salah!');
+        // Delay kecil untuk mencegah brute-force
+        sleep(1);
+
+        return redirect()->back()
+            ->withInput($request->only('username'))
+            ->with('error', 'Username atau password yang Anda masukkan salah!');
     }
 
     // Logout Admin
