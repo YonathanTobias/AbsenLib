@@ -15,8 +15,9 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --primary: #4f46e5;
-            --secondary: #7c3aed;
+            --primary: #2563eb;
+            --secondary: #0284c7;
+            --accent: #0ea5e9;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -61,7 +62,7 @@
         }
         .sidebar-logo-icon {
             width: 36px; height: 36px;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
             border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1rem; color: #fff; flex-shrink: 0;
@@ -72,7 +73,7 @@
         .sidebar-label { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); padding:0.5rem 0.7rem 0.3rem; margin-top:0.5rem; }
         .nav-link { display:flex; align-items:center; gap:0.65rem; padding:0.65rem 0.9rem; border-radius:10px; font-size:0.84rem; font-weight:500; color:var(--text-secondary); text-decoration:none; transition:all 0.2s ease; }
         .nav-link:hover { background:rgba(255,255,255,0.05); color:var(--text-primary); }
-        .nav-link.active { background:linear-gradient(90deg,rgba(79,70,229,0.2),rgba(124,58,237,0.1)); color:#a5b4fc; border:1px solid rgba(79,70,229,0.2); font-weight:600; }
+        .nav-link.active { background:linear-gradient(90deg,rgba(37,99,235,0.2),rgba(2,132,199,0.1)); color:#93c5fd; border:1px solid rgba(37,99,235,0.25); font-weight:600; }
         .nav-link .nav-icon { width:18px; text-align:center; font-size:0.88rem; }
         .sidebar-footer { padding:1rem 0.8rem; border-top:1px solid var(--dark-border); display:flex; flex-direction:column; gap:0.4rem; }
         .sidebar-footer-link { display:flex; align-items:center; gap:0.6rem; padding:0.6rem 0.9rem; border-radius:10px; font-size:0.82rem; font-weight:500; text-decoration:none; transition:all 0.2s; }
@@ -89,8 +90,8 @@
         .topbar { display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; background:rgba(15,23,42,0.8); backdrop-filter:blur(12px); border-bottom:1px solid var(--dark-border); position:sticky; top:0; z-index:40; }
         .topbar-left h1 { font-family:'Poppins',sans-serif; font-size:1.1rem; font-weight:700; color:var(--text-primary); }
         .topbar-left p { font-size:0.78rem; color:var(--text-muted); }
-        .admin-badge { display:flex; align-items:center; gap:0.5rem; background:rgba(79,70,229,0.12); border:1px solid rgba(79,70,229,0.2); border-radius:50px; padding:0.4rem 0.9rem; font-size:0.78rem; font-weight:600; color:#a5b4fc; }
-        .admin-avatar { width:26px; height:26px; background:linear-gradient(135deg,#4f46e5,#7c3aed); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:#fff; }
+        .admin-badge { display:flex; align-items:center; gap:0.5rem; background:rgba(37,99,235,0.12); border:1px solid rgba(37,99,235,0.25); border-radius:50px; padding:0.4rem 0.9rem; font-size:0.78rem; font-weight:600; color:#93c5fd; }
+        .admin-avatar { width:26px; height:26px; background:linear-gradient(135deg,#1d4ed8,#0284c7); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:#fff; }
 
         /* Page content */
         .page-content { padding: 2rem; }
@@ -103,7 +104,7 @@
         /* Stat grid */
         .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:1rem; margin-bottom:1.5rem; }
         .stat-card { background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; padding:1.2rem 1.3rem; display:flex; align-items:center; gap:1rem; position:relative; overflow:hidden; transition:transform 0.25s,box-shadow 0.25s; }
-        .stat-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:var(--stat-accent,linear-gradient(90deg,#4f46e5,#7c3aed)); }
+        .stat-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; background:var(--stat-accent,linear-gradient(90deg,#1d4ed8,#0284c7)); }
         .stat-card:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.3); }
         .stat-icon-wrap { width:44px;height:44px; border-radius:12px; display:flex;align-items:center;justify-content:center; font-size:1.1rem; flex-shrink:0; }
         .stat-value { font-family:'Poppins',sans-serif; font-size:1.7rem; font-weight:800; color:var(--text-primary); line-height:1; margin-bottom:0.2rem; }
@@ -115,14 +116,14 @@
         .filter-input-wrap { position:relative; flex:1; min-width:200px; }
         .filter-input-icon { position:absolute; left:0.9rem; top:50%; transform:translateY(-50%); color:var(--text-muted); font-size:0.85rem; pointer-events:none; }
         .filter-input { width:100%; padding:0.65rem 0.9rem 0.65rem 2.5rem; font-size:0.85rem; font-family:'Inter',sans-serif; color:var(--text-primary); background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.08); border-radius:10px; outline:none; transition:all 0.2s; }
-        .filter-input:focus { border-color:var(--primary); background:rgba(79,70,229,0.06); box-shadow:0 0 0 3px rgba(79,70,229,0.1); }
+        .filter-input:focus { border-color:var(--primary); background:rgba(37,99,235,0.06); box-shadow:0 0 0 3px rgba(37,99,235,0.15); }
         .filter-input::placeholder { color:var(--text-muted); }
         .filter-select { padding:0.65rem 2.2rem 0.65rem 0.9rem; font-size:0.85rem; font-family:'Inter',sans-serif; color:var(--text-primary); background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.08); border-radius:10px; outline:none; transition:all 0.2s; color-scheme:dark; min-width:180px; appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%2364748b' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 0.7rem center; background-size:14px; }
         .filter-select:focus { border-color:var(--primary); }
         .filter-btn-group { display:flex; gap:0.5rem; }
         .btn-filter { display:flex;align-items:center;gap:0.4rem; padding:0.65rem 1.1rem; font-size:0.83rem; font-weight:600; font-family:'Inter',sans-serif; border:none; border-radius:10px; cursor:pointer; transition:all 0.25s; white-space:nowrap; }
-        .btn-primary-grad { background:linear-gradient(90deg,#4f46e5,#7c3aed); color:#fff; }
-        .btn-primary-grad:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(79,70,229,0.35); }
+        .btn-primary-grad { background:linear-gradient(90deg,#1d4ed8,#0284c7); color:#fff; }
+        .btn-primary-grad:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(37,99,235,0.35); }
         .btn-reset { background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1); color:var(--text-secondary); text-decoration:none; }
         .btn-reset:hover { background:rgba(255,255,255,0.1); color:var(--text-primary); }
         .btn-excel { background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.2); color:#6ee7b7; text-decoration:none; }
@@ -132,7 +133,7 @@
         .table-card { background:var(--dark-card); border:1px solid var(--dark-border); border-radius:16px; overflow:hidden; }
         .table-card-header { padding:1rem 1.3rem; border-bottom:1px solid var(--dark-border); display:flex; align-items:center; justify-content:space-between; }
         .table-card-title { font-family:'Poppins',sans-serif; font-size:0.9rem; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:0.5rem; }
-        .table-card-title i { color:#818cf8; }
+        .table-card-title i { color:#38bdf8; }
         .result-count { font-size:0.75rem; color:var(--text-muted); background:rgba(255,255,255,0.05); border:1px solid var(--dark-border); border-radius:50px; padding:0.2rem 0.7rem; }
 
         .data-table { width:100%; border-collapse:collapse; }
@@ -141,19 +142,19 @@
         .data-table thead th:last-child { padding-right:1.3rem; }
         .data-table tbody tr { border-bottom:1px solid rgba(255,255,255,0.04); transition:background 0.18s; }
         .data-table tbody tr:last-child { border-bottom:none; }
-        .data-table tbody tr:hover { background:rgba(79,70,229,0.06); }
+        .data-table tbody tr:hover { background:rgba(37,99,235,0.06); }
         .data-table td { padding:0.85rem 1rem; vertical-align:middle; font-size:0.85rem; }
         .data-table td:first-child { padding-left:1.3rem; }
         .data-table td:last-child { padding-right:1.3rem; }
 
-        .row-num { width:28px;height:28px; border-radius:8px; background:rgba(79,70,229,0.12); border:1px solid rgba(79,70,229,0.2); display:flex;align-items:center;justify-content:center; font-size:0.72rem; font-weight:700; color:#818cf8; }
+        .row-num { width:28px;height:28px; border-radius:8px; background:rgba(37,99,235,0.12); border:1px solid rgba(37,99,235,0.25); display:flex;align-items:center;justify-content:center; font-size:0.72rem; font-weight:700; color:#60a5fa; }
 
         .name-cell { display:flex;align-items:center;gap:0.65rem; }
         .avatar-sm { width:36px;height:36px; border-radius:50%; display:flex;align-items:center;justify-content:center; font-size:0.78rem; font-weight:700; color:#fff; flex-shrink:0; }
         .name-bold { font-weight:600; color:var(--text-primary); }
         .name-sub { font-size:0.72rem; color:var(--text-muted); }
 
-        .nim-chip { display:inline-block; padding:0.2rem 0.65rem; background:rgba(99,102,241,0.1); border:1px solid rgba(99,102,241,0.2); border-radius:6px; font-size:0.78rem; font-family:'Courier New',monospace; font-weight:600; color:#a5b4fc; }
+        .nim-chip { display:inline-block; padding:0.2rem 0.65rem; background:rgba(37,99,235,0.1); border:1px solid rgba(37,99,235,0.25); border-radius:6px; font-size:0.78rem; font-family:'Courier New',monospace; font-weight:600; color:#93c5fd; }
 
         .badge-peran { display:inline-flex;align-items:center;gap:0.3rem; padding:0.25rem 0.7rem; border-radius:50px; font-size:0.72rem; font-weight:600; }
         .badge-mahasiswa { background:rgba(6,182,212,0.12);color:#67e8f9;border:1px solid rgba(6,182,212,0.2); }
@@ -199,7 +200,7 @@
         }
 
         .empty-state { text-align:center; padding:4rem 2rem; }
-        .empty-icon-wrap { width:72px;height:72px; border-radius:20px; background:rgba(79,70,229,0.1); border:1px solid rgba(79,70,229,0.2); display:flex;align-items:center;justify-content:center; font-size:1.8rem; color:#818cf8; margin:0 auto 1rem; }
+        .empty-icon-wrap { width:72px;height:72px; border-radius:20px; background:rgba(37,99,235,0.1); border:1px solid rgba(37,99,235,0.25); display:flex;align-items:center;justify-content:center; font-size:1.8rem; color:#38bdf8; margin:0 auto 1rem; }
         .empty-title { font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;color:var(--text-secondary);margin-bottom:0.4rem; }
         .empty-sub { font-size:0.82rem;color:var(--text-muted); }
 
@@ -229,7 +230,7 @@
         @keyframes modalIn { from { opacity:0; transform:scale(0.92) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
         .modal-hdr {
             padding: 1.2rem 1.5rem;
-            background: linear-gradient(90deg, #1e1b4b, #312e81);
+            background: linear-gradient(90deg, #0f274a, #1e3a8a);
             border-bottom: 1px solid rgba(255,255,255,0.07);
             display: flex;
             align-items: center;
@@ -256,7 +257,7 @@
             transition: all 0.2s;
             color-scheme: dark;
         }
-        .modal-input:focus { border-color: #6366f1; background:rgba(79,70,229,0.07); box-shadow:0 0 0 3px rgba(79,70,229,0.12); }
+        .modal-input:focus { border-color: #2563eb; background:rgba(37,99,235,0.08); box-shadow:0 0 0 3px rgba(37,99,235,0.18); }
         .modal-hint { font-size:0.72rem; color:var(--text-muted); margin-top:0.3rem; }
 
         .btn-m-cancel {
@@ -268,11 +269,11 @@
         .btn-m-cancel:hover { background:rgba(255,255,255,0.1); color:var(--text-primary); }
         .btn-m-save {
             padding:0.6rem 1.3rem; font-size:0.83rem; font-weight:700;
-            color:#fff; background:linear-gradient(90deg,#4f46e5,#7c3aed);
+            color:#fff; background:linear-gradient(90deg,#1d4ed8,#0284c7);
             border:none; border-radius:10px; cursor:pointer;
             font-family:'Poppins',sans-serif; transition:all 0.25s;
         }
-        .btn-m-save:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(79,70,229,0.4); }
+        .btn-m-save:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,99,235,0.4); }
         .btn-m-delete {
             padding:0.6rem 1.3rem; font-size:0.83rem; font-weight:700;
             color:#fff; background:linear-gradient(90deg,#dc2626,#ef4444);
@@ -295,9 +296,9 @@
             font-family: 'Inter', sans-serif;
         }
         .btn-topbar-action:hover {
-            background: rgba(79,70,229,0.15);
-            border-color: rgba(79,70,229,0.3);
-            color: #a5b4fc;
+            background: rgba(37,99,235,0.15);
+            border-color: rgba(37,99,235,0.3);
+            color: #93c5fd;
             transform: translateY(-1px);
         }
     </style>
@@ -401,18 +402,18 @@
                         <div class="stat-label">Total Anggota Terdaftar</div>
                     </div>
                 </div>
-                <div class="stat-card" style="--stat-accent:linear-gradient(90deg,#06b6d4,#4f46e5);">
-                    <div class="stat-icon-wrap" style="background:rgba(6,182,212,0.15);">
-                        <i class="fa-solid fa-graduation-cap" style="color:#67e8f9;"></i>
+                <div class="stat-card" style="--stat-accent:linear-gradient(90deg,#0ea5e9,#2563eb);">
+                    <div class="stat-icon-wrap" style="background:rgba(14,165,233,0.15);">
+                        <i class="fa-solid fa-graduation-cap" style="color:#38bdf8;"></i>
                     </div>
                     <div>
                         <div class="stat-value">{{ $anggotas->where('peran','Mahasiswa')->count() }}</div>
                         <div class="stat-label">Anggota Mahasiswa</div>
                     </div>
                 </div>
-                <div class="stat-card" style="--stat-accent:linear-gradient(90deg,#7c3aed,#4f46e5);">
-                    <div class="stat-icon-wrap" style="background:rgba(124,58,237,0.15);">
-                        <i class="fa-solid fa-chalkboard-user" style="color:#c4b5fd;"></i>
+                <div class="stat-card" style="--stat-accent:linear-gradient(90deg,#0284c7,#1d4ed8);">
+                    <div class="stat-icon-wrap" style="background:rgba(2,132,199,0.15);">
+                        <i class="fa-solid fa-chalkboard-user" style="color:#60a5fa;"></i>
                     </div>
                     <div>
                         <div class="stat-value">{{ $anggotas->where('peran','Dosen/Staff')->count() }}</div>
@@ -480,7 +481,7 @@
                                         $parts = explode(' ', $nama);
                                         $initials = strtoupper(substr($parts[0], 0, 1) . substr($parts[1], 0, 1));
                                     }
-                                    $colors = ['#4f46e5','#7c3aed','#0891b2','#059669','#dc2626','#d97706','#be185d'];
+                                    $colors = ['#2563eb','#0284c7','#0891b2','#0d9488','#059669','#3b82f6','#0369a1','#1d4ed8'];
                                     $color = $colors[crc32($nama) % count($colors)];
                                     $badgeClass = match($item->peran) {
                                         'Mahasiswa'   => 'badge-mahasiswa',
@@ -611,7 +612,7 @@
 <!-- ===== MODAL GANTI PASSWORD ===== -->
 <div class="modal-overlay" id="modalGantiPassword" onclick="if(event.target===this) closeModalGantiPassword()">
     <div class="modal-box" style="max-width:440px;">
-        <div class="modal-hdr" style="background: linear-gradient(90deg, #312e81, #4c1d95);">
+        <div class="modal-hdr" style="background: linear-gradient(90deg, #0f274a, #1d4ed8);">
             <div class="modal-ttl"><i class="fa-solid fa-shield-halved"></i>Ganti Username & Password</div>
             <button type="button" class="modal-cls" onclick="closeModalGantiPassword()"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -630,7 +631,7 @@
                 <div class="modal-grp">
                     <label class="modal-lbl" for="pw_username_baru">Username Baru</label>
                     <input type="text" class="modal-input" id="pw_username_baru" name="username_baru" value="{{ session('admin_username', 'admin') }}" placeholder="Contoh: admin" required autocomplete="off">
-                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#818cf8; margin-right:4px;"></i>Bisa tetap pakai username lama atau buat baru.</p>
+                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#38bdf8; margin-right:4px;"></i>Bisa tetap pakai username lama atau buat baru.</p>
                 </div>
                 <div class="modal-grp">
                     <label class="modal-lbl" for="pw_password_baru">Password Baru</label>

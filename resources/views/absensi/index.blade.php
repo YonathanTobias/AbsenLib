@@ -15,26 +15,26 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --primary: #4f46e5;
-            --primary-dark: #3730a3;
-            --secondary: #7c3aed;
-            --accent: #06b6d4;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #0284c7;
+            --accent: #0ea5e9;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
-            --text-primary: #1e1b4b;
-            --text-secondary: #6b7280;
-            --bg-card: rgba(255,255,255,0.75);
-            --border-glass: rgba(255,255,255,0.5);
-            --shadow-card: 0 8px 32px rgba(79,70,229,0.12);
-            --shadow-hover: 0 20px 48px rgba(79,70,229,0.22);
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --bg-card: rgba(255,255,255,0.82);
+            --border-glass: rgba(255,255,255,0.6);
+            --shadow-card: 0 8px 32px rgba(37,99,235,0.1);
+            --shadow-hover: 0 20px 48px rgba(37,99,235,0.22);
         }
 
         html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 40%, #faf5ff 70%, #ede9fe 100%);
+            background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 40%, #f0f9ff 70%, #e0f2fe 100%);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
@@ -46,18 +46,18 @@
             position: fixed;
             border-radius: 50%;
             filter: blur(80px);
-            opacity: 0.35;
+            opacity: 0.4;
             z-index: 0;
             animation: blobFloat 8s ease-in-out infinite alternate;
         }
         body::before {
             width: 500px; height: 500px;
-            background: radial-gradient(circle, #818cf8, #a78bfa);
+            background: radial-gradient(circle, #60a5fa, #38bdf8);
             top: -150px; left: -100px;
         }
         body::after {
             width: 400px; height: 400px;
-            background: radial-gradient(circle, #67e8f9, #818cf8);
+            background: radial-gradient(circle, #38bdf8, #93c5fd);
             bottom: -100px; right: -80px;
             animation-delay: -4s;
         }
@@ -70,9 +70,9 @@
         body .bg-dots {
             position: fixed;
             inset: 0;
-            background-image: radial-gradient(circle, #a5b4fc 1px, transparent 1px);
+            background-image: radial-gradient(circle, #93c5fd 1.2px, transparent 1.2px);
             background-size: 32px 32px;
-            opacity: 0.18;
+            opacity: 0.28;
             z-index: 0;
             pointer-events: none;
         }
@@ -82,8 +82,8 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 60%, #6d28d9 100%);
-            box-shadow: 0 4px 24px rgba(79,70,229,0.25);
+            background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 50%, #0284c7 100%);
+            box-shadow: 0 4px 24px rgba(37,99,235,0.28);
             backdrop-filter: blur(12px);
             padding: 0.85rem 0;
         }
@@ -117,7 +117,7 @@
         .navbar-brand .brand-sub {
             font-size: 0.65rem;
             font-weight: 400;
-            opacity: 0.8;
+            opacity: 0.85;
             display: block;
             line-height: 1;
         }
@@ -126,8 +126,8 @@
             align-items: center;
             gap: 0.4rem;
             padding: 0.45rem 1rem;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.35);
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.4);
             border-radius: 50px;
             color: #fff;
             font-size: 0.82rem;
@@ -137,8 +137,8 @@
             backdrop-filter: blur(8px);
         }
         .btn-admin-nav:hover {
-            background: rgba(255,255,255,0.28);
-            border-color: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.7);
             transform: translateY(-1px);
             box-shadow: 0 4px 16px rgba(0,0,0,0.15);
         }
@@ -154,8 +154,8 @@
             display: inline-flex;
             align-items: center;
             gap: 0.4rem;
-            background: rgba(79,70,229,0.1);
-            border: 1px solid rgba(79,70,229,0.2);
+            background: rgba(37,99,235,0.1);
+            border: 1px solid rgba(37,99,235,0.22);
             border-radius: 50px;
             padding: 0.3rem 0.9rem;
             font-size: 0.75rem;
@@ -184,7 +184,7 @@
             letter-spacing: -0.03em;
         }
         .hero-title span {
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            background: linear-gradient(90deg, #1d4ed8, #0284c7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -231,7 +231,7 @@
         /* Card Header */
         .card-header-custom {
             padding: 1.2rem 1.5rem;
-            border-bottom: 1px solid rgba(79,70,229,0.08);
+            border-bottom: 1px solid rgba(37,99,235,0.08);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -251,8 +251,8 @@
             display: flex; align-items: center; justify-content: center;
             font-size: 0.85rem;
         }
-        .icon-wrap-primary { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; }
-        .icon-wrap-secondary { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: #fff; }
+        .icon-wrap-primary { background: linear-gradient(135deg, #1d4ed8, #0284c7); color: #fff; }
+        .icon-wrap-secondary { background: linear-gradient(135deg, #0284c7, #0ea5e9); color: #fff; }
 
         /* ===== FORM ABSENSI ===== */
         .form-body { padding: 1.5rem; }
@@ -275,7 +275,7 @@
             left: 1rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #a5b4fc;
+            color: #93c5fd;
             font-size: 0.95rem;
             pointer-events: none;
             transition: color 0.2s;
@@ -287,8 +287,8 @@
             font-family: 'Inter', sans-serif;
             font-weight: 500;
             color: var(--text-primary);
-            background: rgba(255,255,255,0.8);
-            border: 2px solid rgba(165,180,252,0.35);
+            background: rgba(255,255,255,0.85);
+            border: 2px solid rgba(147,197,253,0.45);
             border-radius: 12px;
             outline: none;
             transition: all 0.25s ease;
@@ -296,13 +296,11 @@
         .form-input:focus {
             border-color: var(--primary);
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(79,70,229,0.12);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
         }
         .form-input:focus + .input-icon,
         .input-group-custom:focus-within .input-icon { color: var(--primary); }
-        /* Fix icon position with focus-within */
-        .input-group-custom:focus-within .input-icon { color: var(--primary); }
-        .form-input::placeholder { color: #c4b5fd; font-weight: 400; }
+        .form-input::placeholder { color: #94a3b8; font-weight: 400; }
         .input-hint {
             font-size: 0.75rem;
             color: var(--text-secondary);
@@ -317,7 +315,7 @@
             font-size: 0.95rem;
             font-weight: 700;
             color: #fff;
-            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+            background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 50%, #0284c7 100%);
             border: none;
             border-radius: 12px;
             cursor: pointer;
@@ -332,13 +330,13 @@
             position: absolute;
             top: 0; left: -100%;
             width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
             transition: left 0.5s ease;
         }
         .btn-submit:hover::before { left: 100%; }
         .btn-submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(79,70,229,0.4);
+            box-shadow: 0 8px 24px rgba(37,99,235,0.38);
         }
         .btn-submit:active { transform: translateY(0); }
 
@@ -433,17 +431,17 @@
             text-transform: uppercase;
             letter-spacing: 0.08em;
             color: var(--text-secondary);
-            border-bottom: 1px solid rgba(79,70,229,0.08);
+            border-bottom: 1px solid rgba(37,99,235,0.08);
             background: rgba(249,250,251,0.6);
         }
         .visitors-table thead th:first-child { padding-left: 1.5rem; border-radius: 0; }
         .visitors-table thead th:last-child { padding-right: 1.5rem; }
         .visitors-table tbody tr {
-            border-bottom: 1px solid rgba(79,70,229,0.05);
+            border-bottom: 1px solid rgba(37,99,235,0.05);
             transition: background 0.2s ease;
         }
         .visitors-table tbody tr:last-child { border-bottom: none; }
-        .visitors-table tbody tr:hover { background: rgba(79,70,229,0.04); }
+        .visitors-table tbody tr:hover { background: rgba(37,99,235,0.04); }
         .visitors-table td {
             padding: 0.8rem 1rem;
             vertical-align: middle;
@@ -472,7 +470,8 @@
         .nim-chip {
             display: inline-block;
             padding: 0.2rem 0.6rem;
-            background: rgba(79,70,229,0.08);
+            background: rgba(37,99,235,0.08);
+            border: 1px solid rgba(37,99,235,0.18);
             border-radius: 6px;
             font-size: 0.78rem;
             font-family: 'Courier New', monospace;
@@ -490,7 +489,7 @@
             font-size: 0.73rem;
             font-weight: 600;
         }
-        .badge-mahasiswa { background: rgba(6,182,212,0.12); color: #0e7490; border: 1px solid rgba(6,182,212,0.25); }
+        .badge-mahasiswa { background: rgba(2,132,199,0.12); color: #0284c7; border: 1px solid rgba(2,132,199,0.25); }
         .badge-dosen     { background: rgba(16,185,129,0.12); color: #065f46; border: 1px solid rgba(16,185,129,0.25); }
         .badge-umum      { background: rgba(107,114,128,0.12); color: #374151; border: 1px solid rgba(107,114,128,0.25); }
 
@@ -509,11 +508,11 @@
         }
         .empty-icon {
             width: 60px; height: 60px;
-            background: rgba(79,70,229,0.08);
+            background: rgba(37,99,235,0.08);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.5rem;
-            color: #c4b5fd;
+            color: #93c5fd;
             margin: 0 auto 0.75rem;
         }
         .empty-text { color: var(--text-secondary); font-size: 0.85rem; }
@@ -523,7 +522,7 @@
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(15,23,42,0.55);
+            background: rgba(15,23,42,0.6);
             backdrop-filter: blur(6px);
             z-index: 999;
             align-items: center;
@@ -551,7 +550,7 @@
         }
         .modal-header {
             padding: 1.3rem 1.5rem;
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            background: linear-gradient(90deg, #1d4ed8, #2563eb);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -596,7 +595,7 @@
         .modal-input:focus {
             border-color: var(--primary);
             background: #fff;
-            box-shadow: 0 0 0 4px rgba(79,70,229,0.1);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
         }
         .modal-select {
             appearance: none;
@@ -624,7 +623,7 @@
             font-size: 0.85rem;
             font-weight: 700;
             color: #fff;
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            background: linear-gradient(90deg, #1d4ed8, #2563eb);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -633,7 +632,7 @@
         }
         .btn-modal-submit:hover {
             transform: translateY(-1px);
-            box-shadow: 0 6px 18px rgba(79,70,229,0.35);
+            box-shadow: 0 6px 18px rgba(37,99,235,0.35);
         }
 
         /* ===== FOOTER ===== */
@@ -748,7 +747,7 @@
                             >
                             <i class="fa-solid fa-id-card input-icon"></i>
                         </div>
-                        <p class="input-hint"><i class="fa-solid fa-circle-info" style="color:#a5b4fc; margin-right:4px;"></i>Cukup masukkan nomor induk untuk mencatat kehadiran.</p>
+                        <p class="input-hint"><i class="fa-solid fa-circle-info" style="color:#2563eb; margin-right:4px;"></i>Cukup masukkan nomor induk untuk mencatat kehadiran.</p>
                     </div>
 
                     <button type="submit" class="btn-submit">
@@ -758,7 +757,7 @@
                 </form>
 
                 <!-- Jam Sekarang -->
-                <div style="text-align:center; margin-top:1.2rem; padding-top:1.2rem; border-top: 1px solid rgba(79,70,229,0.08);">
+                <div style="text-align:center; margin-top:1.2rem; padding-top:1.2rem; border-top: 1px solid rgba(37,99,235,0.1);">
                     <p style="font-size:0.78rem; color:var(--text-secondary); margin-bottom:0.2rem;">Waktu Sekarang</p>
                     <p id="current-time" style="font-family:'Poppins',sans-serif; font-size:1.6rem; font-weight:800; color:var(--primary); letter-spacing:-0.03em;"></p>
                     <p id="current-date" style="font-size:0.78rem; color:var(--text-secondary);"></p>
@@ -773,7 +772,7 @@
                     <div class="icon-wrap icon-wrap-secondary"><i class="fa-solid fa-clock-rotate-left"></i></div>
                     Pengunjung Terakhir
                 </div>
-                <span style="display:inline-flex; align-items:center; gap:0.3rem; background:linear-gradient(90deg,#4f46e5,#7c3aed); color:#fff; font-size:0.73rem; font-weight:700; padding:0.25rem 0.75rem; border-radius:50px;">
+                <span style="display:inline-flex; align-items:center; gap:0.3rem; background:linear-gradient(90deg,#1d4ed8,#0284c7); color:#fff; font-size:0.73rem; font-weight:700; padding:0.25rem 0.75rem; border-radius:50px;">
                     <i class="fa-solid fa-star" style="font-size:0.65rem;"></i> Top 10
                 </span>
             </div>
@@ -796,7 +795,7 @@
                                 $parts = explode(' ', $nama);
                                 $initials = strtoupper(substr($parts[0], 0, 1) . substr($parts[1], 0, 1));
                             }
-                            $colors = ['#4f46e5','#7c3aed','#0891b2','#059669','#dc2626','#d97706','#7c3aed','#be185d'];
+                            $colors = ['#2563eb','#0284c7','#0891b2','#0d9488','#059669','#3b82f6','#0369a1','#1d4ed8'];
                             $color = $colors[crc32($nama) % count($colors)];
                             $badgeClass = match($peran) {
                                 'Mahasiswa'   => 'badge-mahasiswa',
@@ -907,11 +906,6 @@
                 setTimeout(() => el.remove(), 500);
             });
         }, 6000);
-
-        // Open modal if there was a registration error
-        @if($errors->any() && !session('error_not_found'))
-            // keep modal open if register failed (check if errors are register-related)
-        @endif
     </script>
 </body>
 </html>

@@ -15,9 +15,9 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --primary: #4f46e5;
-            --secondary: #7c3aed;
-            --accent: #06b6d4;
+            --primary: #2563eb;
+            --secondary: #0284c7;
+            --accent: #0ea5e9;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ef4444;
@@ -65,7 +65,7 @@
         }
         .sidebar-logo-icon {
             width: 36px; height: 36px;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
             border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1rem;
@@ -117,9 +117,9 @@
         }
         .nav-link:hover { background: rgba(255,255,255,0.05); color: var(--text-primary); }
         .nav-link.active {
-            background: linear-gradient(90deg, rgba(79,70,229,0.2), rgba(124,58,237,0.1));
-            color: #a5b4fc;
-            border: 1px solid rgba(79,70,229,0.2);
+            background: linear-gradient(90deg, rgba(37,99,235,0.2), rgba(2,132,199,0.1));
+            color: #93c5fd;
+            border: 1px solid rgba(37,99,235,0.25);
             font-weight: 600;
         }
         .nav-link .nav-icon { width: 18px; text-align: center; font-size: 0.88rem; }
@@ -199,17 +199,17 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            background: rgba(79,70,229,0.12);
-            border: 1px solid rgba(79,70,229,0.2);
+            background: rgba(37,99,235,0.12);
+            border: 1px solid rgba(37,99,235,0.25);
             border-radius: 50px;
             padding: 0.4rem 0.9rem;
             font-size: 0.78rem;
             font-weight: 600;
-            color: #a5b4fc;
+            color: #93c5fd;
         }
         .admin-badge .admin-avatar {
             width: 26px; height: 26px;
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            background: linear-gradient(135deg, #1d4ed8, #0284c7);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             font-size: 0.7rem;
@@ -260,7 +260,7 @@
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 2px;
-            background: var(--stat-accent, linear-gradient(90deg, #4f46e5, #7c3aed));
+            background: var(--stat-accent, linear-gradient(90deg, #1d4ed8, #0284c7));
         }
         .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
         .stat-icon-wrap {
@@ -323,8 +323,8 @@
         }
         .filter-input:focus {
             border-color: var(--primary);
-            background: rgba(79,70,229,0.06);
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+            background: rgba(37,99,235,0.06);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
         }
         .filter-input::placeholder { color: var(--text-muted); }
         .filter-date {
@@ -342,7 +342,7 @@
         }
         .filter-date:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
         }
         .filter-btn-group { display: flex; gap: 0.5rem; }
         .btn-filter {
@@ -358,10 +358,10 @@
             white-space: nowrap;
         }
         .btn-filter-primary {
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            background: linear-gradient(90deg, #1d4ed8, #0284c7);
             color: #fff;
         }
-        .btn-filter-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,0.35); }
+        .btn-filter-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,0.35); }
         .btn-filter-reset {
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.1);
@@ -377,10 +377,10 @@
         }
         .btn-filter-excel:hover { background: rgba(16,185,129,0.2); transform: translateY(-1px); }
         .btn-filter-manual {
-            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            background: linear-gradient(90deg, #1d4ed8, #0284c7);
             color: #fff;
         }
-        .btn-filter-manual:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,70,229,0.35); }
+        .btn-filter-manual:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(37,99,235,0.35); }
 
         /* Table Card */
         .table-card {
@@ -405,7 +405,7 @@
             align-items: center;
             gap: 0.5rem;
         }
-        .table-card-title i { color: #818cf8; }
+        .table-card-title i { color: #38bdf8; }
         .result-count {
             font-size: 0.75rem;
             color: var(--text-muted);
@@ -436,7 +436,7 @@
             transition: background 0.18s;
         }
         .data-table tbody tr:last-child { border-bottom: none; }
-        .data-table tbody tr:hover { background: rgba(79,70,229,0.06); }
+        .data-table tbody tr:hover { background: rgba(37,99,235,0.06); }
         .data-table td {
             padding: 0.85rem 1rem;
             vertical-align: middle;
@@ -449,12 +449,12 @@
         .row-num {
             width: 28px; height: 28px;
             border-radius: 8px;
-            background: rgba(79,70,229,0.12);
-            border: 1px solid rgba(79,70,229,0.2);
+            background: rgba(37,99,235,0.12);
+            border: 1px solid rgba(37,99,235,0.25);
             display: flex; align-items: center; justify-content: center;
             font-size: 0.72rem;
             font-weight: 700;
-            color: #818cf8;
+            color: #60a5fa;
         }
 
         /* Datetime cell */
@@ -479,13 +479,13 @@
         .nim-chip {
             display: inline-block;
             padding: 0.2rem 0.65rem;
-            background: rgba(99,102,241,0.1);
-            border: 1px solid rgba(99,102,241,0.2);
+            background: rgba(37,99,235,0.1);
+            border: 1px solid rgba(37,99,235,0.25);
             border-radius: 6px;
             font-size: 0.78rem;
             font-family: 'Courier New', monospace;
             font-weight: 600;
-            color: #a5b4fc;
+            color: #93c5fd;
         }
 
         /* Badge peran */
@@ -496,7 +496,7 @@
             font-size: 0.72rem;
             font-weight: 600;
         }
-        .badge-mahasiswa { background: rgba(6,182,212,0.12); color: #67e8f9; border: 1px solid rgba(6,182,212,0.2); }
+        .badge-mahasiswa { background: rgba(2,132,199,0.15); color: #38bdf8; border: 1px solid rgba(2,132,199,0.3); }
         .badge-dosen     { background: rgba(16,185,129,0.12); color: #6ee7b7; border: 1px solid rgba(16,185,129,0.2); }
         .badge-umum      { background: rgba(148,163,184,0.1); color: #94a3b8; border: 1px solid rgba(148,163,184,0.15); }
 
@@ -508,11 +508,11 @@
         .empty-icon-wrap {
             width: 72px; height: 72px;
             border-radius: 20px;
-            background: rgba(79,70,229,0.1);
-            border: 1px solid rgba(79,70,229,0.2);
+            background: rgba(37,99,235,0.1);
+            border: 1px solid rgba(37,99,235,0.25);
             display: flex; align-items: center; justify-content: center;
             font-size: 1.8rem;
-            color: #818cf8;
+            color: #38bdf8;
             margin: 0 auto 1rem;
         }
         .empty-title { font-family: 'Poppins',sans-serif; font-size: 1rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.4rem; }
@@ -544,7 +544,7 @@
         @keyframes modalIn { from { opacity:0; transform:scale(0.92) translateY(20px); } to { opacity:1; transform:scale(1) translateY(0); } }
         .modal-hdr {
             padding: 1.2rem 1.5rem;
-            background: linear-gradient(90deg, #1e1b4b, #312e81);
+            background: linear-gradient(90deg, #0f274a, #1e3a8a);
             border-bottom: 1px solid rgba(255,255,255,0.07);
             display: flex;
             align-items: center;
@@ -571,7 +571,7 @@
             transition: all 0.2s;
             color-scheme: dark;
         }
-        .modal-input:focus { border-color: #6366f1; background:rgba(79,70,229,0.07); box-shadow:0 0 0 3px rgba(79,70,229,0.12); }
+        .modal-input:focus { border-color: #2563eb; background:rgba(37,99,235,0.08); box-shadow:0 0 0 3px rgba(37,99,235,0.18); }
         .modal-hint { font-size:0.72rem; color:var(--text-muted); margin-top:0.3rem; }
 
         .btn-m-cancel {
@@ -583,11 +583,11 @@
         .btn-m-cancel:hover { background:rgba(255,255,255,0.1); color:var(--text-primary); }
         .btn-m-save {
             padding:0.6rem 1.3rem; font-size:0.83rem; font-weight:700;
-            color:#fff; background:linear-gradient(90deg,#4f46e5,#7c3aed);
+            color:#fff; background:linear-gradient(90deg,#1d4ed8,#0284c7);
             border:none; border-radius:10px; cursor:pointer;
             font-family:'Poppins',sans-serif; transition:all 0.25s;
         }
-        .btn-m-save:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(79,70,229,0.4); }
+        .btn-m-save:hover { transform:translateY(-1px); box-shadow:0 6px 18px rgba(37,99,235,0.4); }
 
         /* Action Buttons */
         .action-btn-group { display:flex; align-items:center; justify-content:center; gap:0.45rem; }
@@ -646,9 +646,9 @@
             font-family: 'Inter', sans-serif;
         }
         .btn-topbar-action:hover {
-            background: rgba(79,70,229,0.15);
-            border-color: rgba(79,70,229,0.3);
-            color: #a5b4fc;
+            background: rgba(37,99,235,0.15);
+            border-color: rgba(37,99,235,0.3);
+            color: #93c5fd;
             transform: translateY(-1px);
         }
     </style>
@@ -743,9 +743,9 @@
 
             <!-- Stat Cards -->
             <div class="stat-grid">
-                <div class="stat-card" style="--stat-accent: linear-gradient(90deg,#4f46e5,#7c3aed);">
-                    <div class="stat-icon-wrap" style="background:rgba(79,70,229,0.15);">
-                        <i class="fa-solid fa-users" style="color:#818cf8;"></i>
+                <div class="stat-card" style="--stat-accent: linear-gradient(90deg,#1d4ed8,#0284c7);">
+                    <div class="stat-icon-wrap" style="background:rgba(37,99,235,0.15);">
+                        <i class="fa-solid fa-users" style="color:#60a5fa;"></i>
                     </div>
                     <div class="stat-info">
                         <div class="stat-value">{{ $totalData }}</div>
@@ -821,7 +821,7 @@
                                         $parts = explode(' ', $nama);
                                         $initials = strtoupper(substr($parts[0], 0, 1) . substr($parts[1], 0, 1));
                                     }
-                                    $colors = ['#4f46e5','#7c3aed','#0891b2','#059669','#dc2626','#d97706','#be185d'];
+                                    $colors = ['#2563eb','#0284c7','#0891b2','#0d9488','#059669','#3b82f6','#0369a1','#1d4ed8'];
                                     $color = $colors[crc32($nama) % count($colors)];
                                     $badgeClass = match($peran) {
                                         'Mahasiswa'   => 'badge-mahasiswa',
@@ -895,7 +895,7 @@
                 <div class="modal-grp">
                     <label class="modal-lbl" for="manual_nomor_induk">NIM / NIP / Nomor Induk</label>
                     <input type="text" class="modal-input" id="manual_nomor_induk" name="nomor_induk" placeholder="Masukkan NIM terdaftar..." required autocomplete="off">
-                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#818cf8; margin-right:4px;"></i>Pastikan NIM sudah terdaftar di Data Anggota.</p>
+                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#38bdf8; margin-right:4px;"></i>Pastikan NIM sudah terdaftar di Data Anggota.</p>
                 </div>
                 <div class="modal-grp">
                     <label class="modal-lbl" for="manual_tanggal">Tanggal</label>
@@ -928,7 +928,7 @@
                 <div class="modal-grp">
                     <label class="modal-lbl" for="edit_nomor_induk">NIM / NIP / Nomor Induk</label>
                     <input type="text" class="modal-input" id="edit_nomor_induk" name="nomor_induk" placeholder="Masukkan NIM terdaftar..." required autocomplete="off">
-                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#818cf8; margin-right:4px;"></i>Pastikan NIM sudah terdaftar di Data Anggota.</p>
+                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#38bdf8; margin-right:4px;"></i>Pastikan NIM sudah terdaftar di Data Anggota.</p>
                 </div>
                 <div class="modal-grp">
                     <label class="modal-lbl" for="edit_tanggal">Tanggal</label>
@@ -963,7 +963,7 @@
                 </div>
                 <h4 style="font-family:'Poppins',sans-serif; font-size:1rem; font-weight:700; color:var(--text-primary); margin-bottom:0.5rem;">Hapus Riwayat Kehadiran Ini?</h4>
                 <p style="font-size:0.83rem; color:var(--text-secondary); line-height:1.5; margin-bottom:0.8rem;">
-                    Apakah Anda yakin ingin menghapus data kehadiran <strong id="delete_absen_nama" style="color:#f87171;"></strong> (<span id="delete_absen_nim"></span>) pada <span id="delete_absen_waktu" style="color:#a5b4fc; font-weight:600;"></span> WIB?
+                    Apakah Anda yakin ingin menghapus data kehadiran <strong id="delete_absen_nama" style="color:#f87171;"></strong> (<span id="delete_absen_nim"></span>) pada <span id="delete_absen_waktu" style="color:#60a5fa; font-weight:600;"></span> WIB?
                 </p>
                 <p style="font-size:0.75rem; color:#fca5a5; background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.18); border-radius:8px; padding:0.6rem 0.8rem; line-height:1.4;">
                     <i class="fa-solid fa-circle-exclamation" style="color:#f87171; margin-right:4px;"></i>
@@ -981,7 +981,7 @@
 <!-- ===== MODAL GANTI PASSWORD ===== -->
 <div class="modal-overlay" id="modalGantiPassword" onclick="if(event.target===this) closeModalGantiPassword()">
     <div class="modal-box" style="max-width:440px;">
-        <div class="modal-hdr" style="background: linear-gradient(90deg, #312e81, #4c1d95);">
+        <div class="modal-hdr" style="background: linear-gradient(90deg, #0f274a, #1d4ed8);">
             <div class="modal-ttl"><i class="fa-solid fa-shield-halved"></i>Ganti Username & Password</div>
             <button type="button" class="modal-cls" onclick="closeModalGantiPassword()"><i class="fa-solid fa-xmark"></i></button>
         </div>
@@ -1000,7 +1000,7 @@
                 <div class="modal-grp">
                     <label class="modal-lbl" for="pw_username_baru">Username Baru</label>
                     <input type="text" class="modal-input" id="pw_username_baru" name="username_baru" value="{{ session('admin_username', 'admin') }}" placeholder="Contoh: admin" required autocomplete="off">
-                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#818cf8; margin-right:4px;"></i>Bisa tetap pakai username lama atau buat baru.</p>
+                    <p class="modal-hint"><i class="fa-solid fa-circle-info" style="color:#38bdf8; margin-right:4px;"></i>Bisa tetap pakai username lama atau buat baru.</p>
                 </div>
                 <div class="modal-grp">
                     <label class="modal-lbl" for="pw_password_baru">Password Baru</label>

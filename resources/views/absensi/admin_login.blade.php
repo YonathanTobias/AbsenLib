@@ -25,7 +25,7 @@
         /* ===== LEFT PANEL (Decorative) ===== */
         .left-panel {
             flex: 1;
-            background: linear-gradient(145deg, #1e1b4b 0%, #312e81 40%, #4c1d95 80%, #1e1b4b 100%);
+            background: linear-gradient(145deg, #091322 0%, #1e3a8a 40%, #1d4ed8 80%, #0f172a 100%);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -41,11 +41,11 @@
             position: absolute;
             border-radius: 50%;
             filter: blur(70px);
-            opacity: 0.3;
+            opacity: 0.35;
             animation: orbFloat 10s ease-in-out infinite alternate;
         }
-        .orb-1 { width: 350px; height: 350px; background: #818cf8; top: -80px; left: -80px; }
-        .orb-2 { width: 250px; height: 250px; background: #a78bfa; bottom: -60px; right: 30px; animation-delay: -5s; }
+        .orb-1 { width: 350px; height: 350px; background: #3b82f6; top: -80px; left: -80px; }
+        .orb-2 { width: 250px; height: 250px; background: #0284c7; bottom: -60px; right: 30px; animation-delay: -5s; }
         .orb-3 { animation: orb3Float 10s ease-in-out infinite alternate; width: 180px; height: 180px; background: #06b6d4; }
         @keyframes orbFloat { from { transform: translate(0,0); } to { transform: translate(20px,25px); } }
         @keyframes orb3Float { from { top: 48%; left: 48%; } to { top: 52%; left: 52%; } }
@@ -55,7 +55,7 @@
             content: '';
             position: absolute;
             inset: 0;
-            background-image: radial-gradient(circle, rgba(167,139,250,0.3) 1px, transparent 1px);
+            background-image: radial-gradient(circle, rgba(56, 189, 248, 0.3) 1px, transparent 1px);
             background-size: 40px 40px;
         }
 
@@ -63,13 +63,13 @@
         .panel-logo {
             width: 90px; height: 90px;
             background: rgba(255,255,255,0.1);
-            border: 2px solid rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.22);
             border-radius: 24px;
             display: flex; align-items: center; justify-content: center;
             font-size: 2.5rem; color: #fff;
             margin: 0 auto 1.5rem;
             backdrop-filter: blur(12px);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
         .panel-title {
             font-family: 'Poppins', sans-serif;
@@ -77,7 +77,7 @@
             margin-bottom: 0.6rem; letter-spacing: -0.03em;
         }
         .panel-sub {
-            color: rgba(196,181,253,0.8);
+            color: rgba(186, 230, 253, 0.85);
             font-size: 0.9rem; line-height: 1.6;
             max-width: 280px; margin: 0 auto 2rem;
         }
@@ -87,11 +87,11 @@
             background: rgba(255,255,255,0.07);
             border: 1px solid rgba(255,255,255,0.12);
             border-radius: 10px; padding: 0.55rem 1rem;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.88);
             font-size: 0.82rem; font-weight: 500; width: 100%;
             backdrop-filter: blur(4px);
         }
-        .feature-item i { color: #a78bfa; font-size: 0.9rem; width: 16px; text-align: center; }
+        .feature-item i { color: #38bdf8; font-size: 0.9rem; width: 16px; text-align: center; }
 
         /* ===== RIGHT PANEL (Login Form) ===== */
         .right-panel {
@@ -109,7 +109,7 @@
             position: absolute;
             width: 300px; height: 300px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(79,70,229,0.15), transparent 70%);
+            background: radial-gradient(circle, rgba(37,99,235,0.18), transparent 70%);
             bottom: -80px; right: -80px;
             pointer-events: none;
         }
@@ -121,15 +121,15 @@
             color: rgba(148,163,184,0.8); font-size: 0.8rem;
             text-decoration: none; margin-bottom: 2rem; transition: color 0.2s;
         }
-        .login-back-link:hover { color: #a5b4fc; }
+        .login-back-link:hover { color: #60a5fa; }
 
         .login-greeting { margin-bottom: 2rem; }
         .login-label-top {
             display: inline-flex; align-items: center; gap: 0.4rem;
-            background: rgba(79,70,229,0.15);
-            border: 1px solid rgba(79,70,229,0.25);
+            background: rgba(37,99,235,0.15);
+            border: 1px solid rgba(37,99,235,0.3);
             border-radius: 50px; padding: 0.25rem 0.8rem;
-            font-size: 0.72rem; font-weight: 600; color: #a5b4fc;
+            font-size: 0.72rem; font-weight: 600; color: #93c5fd;
             letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.8rem;
         }
         .login-title {
@@ -179,11 +179,11 @@
             transition: all 0.25s ease;
         }
         .login-input:focus {
-            border-color: #6366f1;
-            background: rgba(99,102,241,0.08);
-            box-shadow: 0 0 0 4px rgba(99,102,241,0.15);
+            border-color: #2563eb;
+            background: rgba(37,99,235,0.08);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.18);
         }
-        .login-input:focus + .input-icon { color: #a5b4fc; }
+        .login-input:focus + .input-icon { color: #60a5fa; }
         .login-input::placeholder { color: #475569; }
 
         /* Password wrap */
@@ -196,25 +196,14 @@
             cursor: pointer; font-size: 0.9rem; padding: 0.2rem;
             transition: color 0.2s;
         }
-        .toggle-pw:hover { color: #a5b4fc; }
-
-        /* Divider */
-        .form-divider {
-            display: flex; align-items: center; gap: 0.75rem;
-            margin: 0.5rem 0 1rem;
-            color: #1e293b; font-size: 0.7rem;
-        }
-        .form-divider::before, .form-divider::after {
-            content: ''; flex: 1; height: 1px;
-            background: rgba(255,255,255,0.06);
-        }
+        .toggle-pw:hover { color: #60a5fa; }
 
         /* Login button */
         .btn-login {
             width: 100%; padding: 0.95rem;
             font-family: 'Poppins', sans-serif;
             font-size: 0.95rem; font-weight: 700; color: #fff;
-            background: linear-gradient(90deg, #4f46e5 0%, #7c3aed 100%);
+            background: linear-gradient(90deg, #1d4ed8 0%, #2563eb 50%, #0284c7 100%);
             border: none; border-radius: 12px; cursor: pointer;
             position: relative; overflow: hidden;
             transition: all 0.3s ease;
@@ -224,11 +213,11 @@
             content: '';
             position: absolute; top: 0; left: -100%;
             width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s;
         }
         .btn-login:hover::before { left: 100%; }
-        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,70,229,0.45); }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,99,235,0.45); }
         .btn-login:active { transform: translateY(0); }
 
         /* Divider */
@@ -256,22 +245,12 @@
             border-color: rgba(255,255,255,0.15);
         }
 
-        /* Credential hint */
-        .credential-hint {
-            margin-top: 1.2rem;
-            background: rgba(79,70,229,0.08);
-            border: 1px solid rgba(79,70,229,0.15);
-            border-radius: 10px; padding: 0.8rem 1rem;
-            font-size: 0.75rem; color: #475569; line-height: 1.7;
-        }
-        .credential-hint strong { color: #6366f1; }
-
         .login-note {
             margin-top: 1.2rem;
             text-align: center; color: #334155;
             font-size: 0.72rem; line-height: 1.5;
         }
-        .login-note i { color: #4f46e5; }
+        .login-note i { color: #2563eb; }
     </style>
 </head>
 <body>
@@ -299,10 +278,6 @@
                 <div class="feature-item">
                     <i class="fa-solid fa-file-excel"></i>
                     Export laporan ke Excel
-                </div>
-                <div class="feature-item">
-                    <i class="fa-solid fa-clock-rotate-left"></i>
-                    Tambah absensi manual
                 </div>
             </div>
         </div>
