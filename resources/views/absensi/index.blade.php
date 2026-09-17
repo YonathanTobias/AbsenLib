@@ -704,6 +704,15 @@
                     </div>
                 @endif
 
+                {{-- Flash Warning --}}
+                @if (session('warning'))
+                    <div class="alert-custom alert-warning-custom">
+                        <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
+                        <div>{{ session('warning') }}</div>
+                        <button class="alert-close" onclick="this.closest('.alert-custom').remove()"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                @endif
+
                 {{-- Error Not Found --}}
                 @if (session('error_not_found'))
                     <div class="alert-custom alert-warning-custom">
@@ -906,6 +915,52 @@
                 setTimeout(() => el.remove(), 500);
             });
         }, 6000);
+
+        // 1. Keep-Alive Ping & CSRF Token Refresher (Mencegah Sesi Expired saat Web Dipanjer Lama)
+        function keepAlive() {
+            fetch("{{ route('keep.alive') }}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.csrf) {
+                        // Update semua input CSRF token di form absensi & modal registrasi
+                        document.querySelectorAll('input[name="_token"]').forEach(input => {
+                            input.value = data.csrf;
+                        });
+                    }
+                })
+                .catch(() => {
+                    // Abaikan jika network sempat offline sejenak
+                });
+        }
+        // Jalankan keep-alive setiap 10 menit (600.000 ms)
+        setInterval(keepAlive, 10 * 60 * 1000);
+
+        // 2. Auto-Reload Halaman jika Standby / Menganggur Lebih dari 15 Menit tanpa interaksi
+        let idleTime = 0;
+        const maxIdleMinutes = 15;
+
+        function resetIdleTimer() {
+            idleTime = 0;
+        }
+
+        // Deteksi aktivitas pengguna (ketik, klik, gerak mouse, sentuh layar)
+        window.onload = resetIdleTimer;
+        document.onmousemove = resetIdleTimer;
+        document.onkeypress = resetIdleTimer;
+        document.onclick = resetIdleTimer;
+        document.ontouchstart = resetIdleTimer;
+
+        setInterval(() => {
+            idleTime++;
+            // Jika tidak ada interaksi selama 15 menit dan tidak sedang mengetik di form
+            const activeInput = document.activeElement;
+            const isTyping = activeInput && (activeInput.tagName === 'INPUT' || activeInput.tagName === 'SELECT');
+            const isModalOpen = document.getElementById('modalRegister')?.classList.contains('show');
+            if (idleTime >= maxIdleMinutes && !isTyping && !isModalOpen) {
+                // Refresh halaman agar data pengunjung dan sesi selalu segar
+                window.location.reload();
+            }
+        }, 60 * 1000);
     </script>
 </body>
 </html>

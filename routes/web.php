@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [AbsensiController::class, 'index'])->name('absensi.index');
 Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
 Route::post('/register', [AbsensiController::class, 'registerStore'])->name('absensi.register');
+Route::get('/keep-alive', function () {
+    return response()->json(['status' => 'ok', 'csrf' => csrf_token()]);
+})->name('keep.alive');
 
 // Form & Proses Login Admin (Harus di luar middleware)
 Route::get('/admin/login', [AbsensiController::class, 'loginForm'])->name('admin.login.form');

@@ -18,5 +18,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (\Illuminate\Session\TokenMismatchException $e, $request) {
+            return redirect()->route('absensi.index')
+                ->with('warning', 'Sesi absensi diperbarui otomatis. Silakan masukkan nomor induk Anda kembali.');
+        });
     })->create();
