@@ -665,6 +665,153 @@
             box-shadow: 0 6px 18px rgba(37,99,235,0.35);
         }
 
+        /* ===== POPUP SUKSES & NOT FOUND ABSENSI ===== */
+        .popup-card {
+            background: #ffffff;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            animation: popupBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popupBounce {
+            0% { transform: scale(0.7) translateY(30px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+        .popup-icon-wrap {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto 1rem;
+            font-size: 2.5rem;
+            position: relative;
+        }
+        .popup-icon-success {
+            background: rgba(16, 185, 129, 0.12);
+            color: #10b981;
+            border: 3px solid rgba(16, 185, 129, 0.25);
+            animation: pulseSuccess 2s infinite;
+        }
+        .popup-icon-warning {
+            background: rgba(245, 158, 11, 0.12);
+            color: #f59e0b;
+            border: 3px solid rgba(245, 158, 11, 0.25);
+            animation: pulseWarning 2s infinite;
+        }
+        @keyframes pulseSuccess {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+        }
+        @keyframes pulseWarning {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
+        }
+        .popup-body {
+            padding: 0 2rem 1.8rem;
+        }
+        .popup-subtitle {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.02em;
+        }
+        .popup-name {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.25;
+            margin-bottom: 0.9rem;
+            background: linear-gradient(90deg, #1d4ed8, #0284c7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .popup-badge-group {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #f1f5f9;
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.78rem;
+            color: #475569;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+        }
+        .popup-badge-group strong {
+            color: #0f172a;
+            font-family: 'Courier New', monospace;
+        }
+        .popup-progress-container {
+            width: 100%;
+            height: 5px;
+            background: #e2e8f0;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            overflow: hidden;
+        }
+        .popup-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #06b6d4);
+            width: 100%;
+            transform-origin: left;
+            animation: shrinkBar 3.5s linear forwards;
+        }
+        @keyframes shrinkBar {
+            from { width: 100%; }
+            to   { width: 0%; }
+        }
+        .btn-popup-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 700;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .btn-popup-success {
+            background: linear-gradient(90deg, #10b981, #059669);
+            color: #fff;
+        }
+        .btn-popup-success:hover {
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-popup-register {
+            background: linear-gradient(90deg, #1d4ed8, #0284c7);
+            color: #fff;
+        }
+        .btn-popup-register:hover {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-1px);
+        }
+        .btn-popup-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            margin-top: 0.6rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+        .btn-popup-secondary:hover {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
         /* ===== FOOTER ===== */
         .footer {
             text-align: center;
@@ -725,35 +872,11 @@
             </div>
             <div class="form-body">
 
-                {{-- Flash Success --}}
-                @if (session('success'))
-                    <div class="alert-custom alert-success-custom">
-                        <i class="fa-solid fa-circle-check alert-icon"></i>
-                        <div>{{ session('success') }}</div>
-                        <button class="alert-close" onclick="this.closest('.alert-custom').remove()"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                @endif
-
-                {{-- Flash Warning --}}
+                {{-- Flash Warning (Keep-Alive / Sesi Timeout) --}}
                 @if (session('warning'))
                     <div class="alert-custom alert-warning-custom">
                         <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
                         <div>{{ session('warning') }}</div>
-                        <button class="alert-close" onclick="this.closest('.alert-custom').remove()"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                @endif
-
-                {{-- Error Not Found --}}
-                @if (session('error_not_found'))
-                    <div class="alert-custom alert-warning-custom">
-                        <i class="fa-solid fa-triangle-exclamation alert-icon"></i>
-                        <div>
-                            {{ session('error_not_found') }}
-                            <br>
-                            <button class="btn-daftar-inline" onclick="document.getElementById('modalRegister').classList.add('show')">
-                                <i class="fa-solid fa-user-plus"></i> Daftar Sekarang
-                            </button>
-                        </div>
                         <button class="alert-close" onclick="this.closest('.alert-custom').remove()"><i class="fa-solid fa-xmark"></i></button>
                     </div>
                 @endif
@@ -927,6 +1050,80 @@
         </div>
     </div>
 
+    <!-- ===== MODAL POP-UP SUKSES ABSENSI ===== -->
+    @php
+        $absenSuccess = session('absen_success');
+        if (!$absenSuccess && session('success')) {
+            $absenSuccess = [
+                'nama'        => 'Pengunjung',
+                'nomor_induk' => '-',
+                'peran'       => 'Umum',
+                'waktu'       => now()->format('H:i') . ' WIB',
+                'tanggal'     => now()->translatedFormat('l, d F Y'),
+                'is_new'      => false,
+            ];
+        }
+        $absenNotFound = session('absen_not_found');
+        if (!$absenNotFound && session('error_not_found')) {
+            $absenNotFound = [
+                'nomor_induk' => old('nomor_induk', ''),
+                'pesan'       => is_string(session('error_not_found')) ? session('error_not_found') : 'Nomor Induk belum terdaftar di database.',
+            ];
+        }
+    @endphp
+
+    @if ($absenSuccess)
+        <div class="modal-overlay show" id="modalPopupSuccess" onclick="closePopupSuccess()">
+            <div class="popup-card" onclick="event.stopPropagation()">
+                <div class="popup-icon-wrap popup-icon-success">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="popup-body">
+                    <p class="popup-subtitle">
+                        {{ !empty($absenSuccess['is_new']) ? '🎉 Registrasi & Absensi Berhasil!' : '✨ Selamat Datang di Perpustakaan' }}
+                    </p>
+                    <h2 class="popup-name">{{ $absenSuccess['nama'] }}</h2>
+                    <div class="popup-badge-group">
+                        <span class="badge-peran badge-mahasiswa" style="font-size:0.75rem;">{{ $absenSuccess['peran'] }}</span>
+                        <span>NIM/NIP: <strong>{{ $absenSuccess['nomor_induk'] }}</strong></span>
+                        <span>• {{ $absenSuccess['waktu'] }}</span>
+                    </div>
+                    <button type="button" class="btn-popup-action btn-popup-success" onclick="closePopupSuccess()" autofocus>
+                        <i class="fa-solid fa-check"></i> Selesai (Tekan Enter)
+                    </button>
+                </div>
+                <div class="popup-progress-container">
+                    <div class="popup-progress-bar" id="progressBarSuccess"></div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if ($absenNotFound)
+        <div class="modal-overlay show" id="modalPopupNotFound" onclick="closePopupNotFound()">
+            <div class="popup-card" onclick="event.stopPropagation()">
+                <div class="popup-icon-wrap popup-icon-warning">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div class="popup-body">
+                    <p class="popup-subtitle" style="color:#d97706;">⚠️ Nomor Induk Belum Terdaftar</p>
+                    <h2 class="popup-name" style="background:linear-gradient(90deg,#d97706,#ef4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; font-size:1.3rem;">
+                        {{ !empty($absenNotFound['nomor_induk']) ? 'NIM: ' . $absenNotFound['nomor_induk'] : 'Data Tidak Ditemukan' }}
+                    </h2>
+                    <p style="font-size:0.85rem; color:#64748b; margin-bottom:1.2rem; line-height:1.5;">
+                        {{ $absenNotFound['pesan'] ?? 'Silakan lakukan registrasi anggota baru terlebih dahulu untuk mencatat kehadiran.' }}
+                    </p>
+                    <button type="button" class="btn-popup-action btn-popup-register" onclick="openRegisterFromNotFound('{{ $absenNotFound['nomor_induk'] ?? '' }}')">
+                        <i class="fa-solid fa-user-plus"></i> Daftar Anggota Sekarang
+                    </button>
+                    <button type="button" class="btn-popup-action btn-popup-secondary" onclick="closePopupNotFound()">
+                        Coba Nomor Lain
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <script>
         // Live clock
         function updateClock() {
@@ -943,7 +1140,7 @@
         updateClock();
         setInterval(updateClock, 1000);
 
-        // Auto-dismiss alerts after 6 seconds
+        // Auto-dismiss inline alerts after 6 seconds
         setTimeout(() => {
             document.querySelectorAll('.alert-custom').forEach(el => {
                 el.style.transition = 'opacity 0.5s';
@@ -992,11 +1189,83 @@
             const activeInput = document.activeElement;
             const isTyping = activeInput && (activeInput.tagName === 'INPUT' || activeInput.tagName === 'SELECT');
             const isModalOpen = document.getElementById('modalRegister')?.classList.contains('show');
-            if (idleTime >= maxIdleMinutes && !isTyping && !isModalOpen) {
+            const isPopupOpen = document.getElementById('modalPopupSuccess')?.classList.contains('show') || document.getElementById('modalPopupNotFound')?.classList.contains('show');
+            if (idleTime >= maxIdleMinutes && !isTyping && !isModalOpen && !isPopupOpen) {
                 // Refresh halaman agar data pengunjung dan sesi selalu segar
                 window.location.reload();
             }
         }, 60 * 1000);
+
+        // 3. Pop-up Auto-Close & Navigation Handlers
+        let successPopupTimer = null;
+        function closePopupSuccess() {
+            if (successPopupTimer) clearTimeout(successPopupTimer);
+            const popup = document.getElementById('modalPopupSuccess');
+            if (popup) {
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 250);
+            }
+            // Auto-focus kembali ke input NIM untuk pengantre berikutnya
+            const input = document.getElementById('nomor_induk');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+        }
+
+        function closePopupNotFound() {
+            const popup = document.getElementById('modalPopupNotFound');
+            if (popup) {
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 250);
+            }
+            const input = document.getElementById('nomor_induk');
+            if (input) {
+                input.select();
+                input.focus();
+            }
+        }
+
+        function openRegisterFromNotFound(nim) {
+            closePopupNotFound();
+            const modalReg = document.getElementById('modalRegister');
+            if (modalReg) {
+                if (nim) {
+                    const regNimInput = document.getElementById('reg_nomor_induk');
+                    if (regNimInput) regNimInput.value = nim;
+                }
+                modalReg.classList.add('show');
+                setTimeout(() => {
+                    const nameInput = document.getElementById('reg_nama');
+                    if (nameInput) nameInput.focus();
+                }, 200);
+            }
+        }
+
+        // Auto-close success popup setelah 3.5 detik
+        @if ($absenSuccess)
+            successPopupTimer = setTimeout(() => {
+                closePopupSuccess();
+            }, 3500);
+        @endif
+
+        // Keyboard navigation (Enter / Space / Esc untuk menutup popup instan)
+        document.addEventListener('keydown', function(e) {
+            const successPopup = document.getElementById('modalPopupSuccess');
+            if (successPopup && successPopup.classList.contains('show')) {
+                if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+                    e.preventDefault();
+                    closePopupSuccess();
+                }
+            }
+            const notFoundPopup = document.getElementById('modalPopupNotFound');
+            if (notFoundPopup && notFoundPopup.classList.contains('show')) {
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    closePopupNotFound();
+                }
+            }
+        });
     </script>
 </body>
 </html>

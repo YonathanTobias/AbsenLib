@@ -34,41 +34,57 @@ class AbsensiController extends Controller
         if (!$anggota) {
             return redirect()->back()
                 ->withInput()
-                ->with('error_not_found', 'NIM/NIP tidak ditemukan. Silakan registrasi terlebih dahulu.');
+                ->with('absen_not_found', [
+                    'nomor_induk' => $request->nomor_induk,
+                    'pesan'       => 'Nomor Induk belum terdaftar. Silakan lakukan registrasi anggota terlebih dahulu.',
+                ]);
         }
 
         // Catat Absensi
-        Absensi::create([
+        $absen = Absensi::create([
             'anggota_id' => $anggota->id,
         ]);
 
         return redirect()->route('absensi.index')
-            ->with('success', "Selamat Datang, {$anggota->nama}! Absensi Anda berhasil dicatat.");
+            ->with('absen_success', [
+                'nama'        => $anggota->nama,
+                'nomor_induk' => $anggota->nomor_induk,
+                'peran'       => $anggota->peran,
+                'waktu'       => $absen->created_at->format('H:i') . ' WIB',
+                'tanggal'     => $absen->created_at->translatedFormat('l, d F Y'),
+                'is_new'      => false,
+            ]);
     }
 
     // Process Registrasi Anggota Baru
     public function registerStore(Request $request)
     {
         $validated = $request->validate([
-        'nomor_induk' => 'required|string|unique:anggotas,nomor_induk',
-        'nama'        => 'required|string|max:255',
-        // Opsi validasi peran diperbarui:
-        'peran'       => 'required|in:Mahasiswa,Dosen/Staff,Umum',
-    ], [
-        'nomor_induk.required' => 'NIM/NIP/NIS wajib diisi.',
-        'nomor_induk.unique'   => 'NIM/NIP/NIS ini sudah terdaftar sebelumnya.',
-        'nama.required'        => 'Nama lengkap wajib diisi.',
-        'peran.required'       => 'Pilih status/peran Anda.',
-    ]);
+            'nomor_induk' => 'required|string|unique:anggotas,nomor_induk',
+            'nama'        => 'required|string|max:255',
+            'peran'       => 'required|in:Mahasiswa,Dosen/Staff,Umum',
+        ], [
+            'nomor_induk.required' => 'NIM/NIP/NIS wajib diisi.',
+            'nomor_induk.unique'   => 'NIM/NIP/NIS ini sudah terdaftar sebelumnya.',
+            'nama.required'        => 'Nama lengkap wajib diisi.',
+            'peran.required'       => 'Pilih status/peran Anda.',
+        ]);
 
-    $anggota = Anggota::create($validated);
+        $anggota = Anggota::create($validated);
 
-    Absensi::create([
-        'anggota_id' => $anggota->id,
-    ]);
+        $absen = Absensi::create([
+            'anggota_id' => $anggota->id,
+        ]);
 
-    return redirect()->route('absensi.index')
-        ->with('success', "Registrasi berhasil! Absensi untuk {$anggota->nama} telah dicatat.");
+        return redirect()->route('absensi.index')
+            ->with('absen_success', [
+                'nama'        => $anggota->nama,
+                'nomor_induk' => $anggota->nomor_induk,
+                'peran'       => $anggota->peran,
+                'waktu'       => $absen->created_at->format('H:i') . ' WIB',
+                'tanggal'     => $absen->created_at->translatedFormat('l, d F Y'),
+                'is_new'      => true,
+            ]);
     }
 
     // Rekap Admin
