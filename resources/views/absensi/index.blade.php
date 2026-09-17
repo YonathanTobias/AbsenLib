@@ -500,6 +500,36 @@
             align-items: center;
             gap: 0.3rem;
         }
+        .dt-cell-public {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .dt-date-public {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+        }
+        .dt-date-public i {
+            color: #0284c7;
+            font-size: 0.72rem;
+        }
+        .dt-time-public {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            white-space: nowrap;
+        }
+        .dt-time-public i {
+            color: #94a3b8;
+            font-size: 0.7rem;
+        }
 
         /* Empty state */
         .empty-state {
@@ -791,7 +821,7 @@
                         <th>Nama</th>
                         <th>Nomor Induk</th>
                         <th>Status</th>
-                        <th>Waktu</th>
+                        <th>Waktu Kunjungan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -822,10 +852,16 @@
                             <td><span class="nim-chip">{{ $item->anggota->nomor_induk ?? '-' }}</span></td>
                             <td><span class="badge-peran {{ $badgeClass }}">{{ $peran }}</span></td>
                             <td>
-                                <span class="time-label">
-                                    <i class="fa-regular fa-clock"></i>
-                                    {{ $item->created_at->format('H:i') }}
-                                </span>
+                                <div class="dt-cell-public">
+                                    <span class="dt-date-public">
+                                        <i class="fa-regular fa-calendar"></i>
+                                        {{ $item->created_at->translatedFormat('d M Y') }}
+                                    </span>
+                                    <span class="dt-time-public">
+                                        <i class="fa-regular fa-clock"></i>
+                                        {{ $item->created_at->format('H:i') }} WIB
+                                    </span>
+                                </div>
                             </td>
                         </tr>
                     @empty
